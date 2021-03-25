@@ -1,0 +1,152 @@
+<!--
+  - Product Screen
+  - @author    ThemesBuckets <themebucketbd@gmail.com>
+  - @copyright Copyright (c) 2020
+  - @license   ThemesBuckets
+-->
+
+<!-- Header -->
+<ion-header class="ion-no-border">
+    <ion-toolbar color="color1">
+
+        <!-- Side Menu Option -->
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+
+        <!-- Title of page -->
+        <ion-title>Products</ion-title>
+
+        <!-- Product Filter Option -->
+        <ion-buttons slot="end">
+            <ion-button color="white" (click)="openFilterPage()">
+                <ion-icon name="funnel"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+
+<!-- Contents -->
+<ion-content id="products">
+
+    <!-- Product View Options -->
+    <div class="ion-text-end">
+
+        <!-- One Column Option -->
+        <ion-button fill="clear" [color]="oneColumn ? 'color1' : 'color2'" class="ion-no-padding"
+            (click)="showOneColumn()">
+            <ion-icon slot="icon-only" name="square"></ion-icon>
+        </ion-button>
+
+        <!-- Grid Option -->
+        <ion-button fill="clear" [color]="grid ? 'color1' : 'color2'" class="ion-no-padding" (click)="showGrid()">
+            <ion-icon slot="icon-only" name="grid"></ion-icon>
+        </ion-button>
+
+        <!-- List View Option -->
+        <ion-button fill="clear" [color]="list ? 'color1' : 'color2'" class="ion-no-padding" (click)="showList()">
+            <ion-icon slot="icon-only" name="list"></ion-icon>
+        </ion-button>
+    </div>
+    <!-- End Product View Options -->
+
+
+    <!-- Grid View Contents -->
+    <ion-grid id="grid" *ngIf="grid">
+        <ion-row>
+            <ion-col sizeLg="4" sizeMd="4" sizeXs="6" *ngFor="let item of products">
+                <ion-card class="ion-no-margin">
+
+                    <!-- Product Image -->
+                    <div class="card-img" [style.background-image]="'url(' + item.images[0] + ')'"
+                        (click)="goToProductDetails(item)"></div>
+
+                    <!-- Wish Button or Product Like/Dislike Button Option -->
+                    <ion-fab vertical="top" horizontal="end">
+                        <ion-fab-button>
+                            <ion-icon color="color1" name="heart-outline" *ngIf="!item.isWishlist"></ion-icon>
+                            <ion-icon color="color1" name="heart" *ngIf="item.isWishlist"></ion-icon>
+                        </ion-fab-button>
+                    </ion-fab>
+
+                    <!-- Product Contents -->
+                    <ion-card-content (click)="goToProductDetails(item)">
+                        <ion-row>
+                            <ion-text color="color1">${{item.discountPrice}} &nbsp;</ion-text>
+                            <span class="previous-price"> ${{item.price}}</span>
+                        </ion-row>
+                        <ion-row>
+                            <h4 class="product-name">{{item.name | slice:0:20}}</h4>
+                        </ion-row>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <!-- One Column View Contents -->
+    <ion-grid id="oneColumn" *ngIf="oneColumn">
+        <ion-row>
+            <ion-col size="12" *ngFor="let item of products">
+                <ion-card class="ion-no-margin">
+
+                    <!-- Product Image -->
+                    <div class="card-img" [style.background-image]="'url(' + item.images[0] + ')'"
+                        (click)="goToProductDetails(item)"></div>
+
+                    <!-- Wish Button or Product Like/Dislike Button Option -->
+                    <ion-fab vertical="top" horizontal="end">
+                        <ion-fab-button>
+                            <ion-icon color="color1" name="heart-outline" *ngIf="!item.isWishlist"></ion-icon>
+                            <ion-icon color="color1" name="heart" *ngIf="item.isWishlist"></ion-icon>
+                        </ion-fab-button>
+                    </ion-fab>
+
+                    <!-- Product Contents -->
+                    <ion-card-content (click)="goToProductDetails(item)">
+                        <ion-row>
+                            <ion-text color="color1">${{item.discountPrice}} &nbsp;</ion-text>
+                            <span class="previous-price"> ${{item.price}}</span>
+                        </ion-row>
+                        <ion-row>
+                            <h4 class="product-name">{{item.name | slice:0:20}}</h4>
+                        </ion-row>
+                    </ion-card-content>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
+    <!-- List View Contents -->
+    <div id="list" *ngIf="list">
+        <ion-card *ngFor="let item of products">
+            <ion-list lines="none" (click)="goToProductDetails(item)">
+                <ion-item class="ion-no-padding">
+
+                    <!-- Product Image -->
+                    <ion-thumbnail slot="start">
+                        <img style="vertical-align: middle;" [src]="item.images[0]">
+                    </ion-thumbnail>
+
+                    <!-- Wish Button or Product Like/Dislike Button Option -->
+                    <ion-fab vertical="bottom" horizontal="end">
+                        <ion-icon color="color1" name="heart-outline" *ngIf="!item.isWishlist"></ion-icon>
+                        <ion-icon color="color1" name="heart" *ngIf="item.isWishlist"></ion-icon>
+                    </ion-fab>
+
+                    <!-- Product Contents -->
+                    <ion-label class="ion-text-wrap">
+                        <ion-row>
+                            <h4 class="product-name">{{item.name | slice:0:20}}</h4>
+                        </ion-row>
+                        <ion-row>
+                            <ion-text color="color1">${{item.discountPrice}} &nbsp;</ion-text>
+                            <span class="previous-price"> ${{item.price}}</span>
+                        </ion-row>
+                    </ion-label>
+                </ion-item>
+            </ion-list>
+        </ion-card>
+    </div>
+</ion-content>

@@ -1,0 +1,51 @@
+#featured-products {
+    .card-img {
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        height: 150px;
+    }
+
+    .product-name {
+        padding: 0;
+        text-align: left;
+
+        h4 {
+            font-size: 1rem;
+            color: rgba(8, 8, 8, 0.58);
+        }
+    }
+
+    .previous-price {
+        text-decoration: line-through;
+        font-size: 0.8rem;
+    }
+
+    ion-fab-button {
+        --background: transparent;
+        --background-focused: transparent;
+        --background-activated: transparent;
+    }
+
+    .text-bold {
+        font-weight: bold;
+    }
+}
+
+div span.only-show-on-hover {
+    visibility: hidden;
+}
+div:hover span.only-show-on-hover  {
+    visibility: visible;
+}
+.review-box {
+    line-height: normal;
+    display: inline-block;
+    color: #fff;
+    padding: 2px 4px 2px 6px;
+    border-radius: 3px;
+    font-weight: 500;
+    font-size: 12px;
+    vertical-align: middle;
+    background-color: #388e3c;
+}
