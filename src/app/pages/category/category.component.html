@@ -7,85 +7,84 @@
 
 <!-- Header -->
 <ion-header class="ion-no-border">
-  <ion-toolbar color="color1">
+    <ion-toolbar color="color1">
 
-    <!-- Side menu option -->
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
+        <!-- Side menu option -->
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
 
-    <!-- Page tile -->
-    <ion-title>Categories</ion-title>
+        <!-- Page tile -->
+        <ion-title>Categories</ion-title>
 
-    <!-- Cart Button Option -->
-    <ion-buttons slot="end">
-      <ion-button color="white" (click)="gotoCartPage()">
-        <ion-icon name="cart"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
+        <!-- Cart Button Option -->
+        <ion-buttons slot="end">
+            <ion-button color="white" (click)="gotoCartPage()">
+                <ion-icon name="cart"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+    </ion-toolbar>
 </ion-header>
 
 <!-- Main Contents -->
 <ion-content id="category" class="ion-padding">
 
-  <!-- Category View Options -->
-  <div class="ion-text-end">
+    <!-- Category View Options -->
+    <div class="ion-text-end">
 
-    <!-- One Column Option -->
-    <ion-button fill="clear" [color]="oneColumn ? 'color1' : 'color2'" class="ion-no-padding" (click)="showOneColumn()">
-      <ion-icon slot="icon-only" name="square"></ion-icon>
-    </ion-button>
+        <!-- One Column Option -->
+        <ion-button fill="clear" [color]="oneColumn ? 'color1' : 'color2'" class="ion-no-padding" (click)="showOneColumn()">
+            <ion-icon slot="icon-only" name="square"></ion-icon>
+        </ion-button>
 
-    <!-- Grid View Option -->
-    <ion-button fill="clear" [color]="grid ? 'color1' : 'color2'" class="ion-no-padding" (click)="showGrid()">
-      <ion-icon slot="icon-only" name="grid"></ion-icon>
-    </ion-button>
+        <!-- Grid View Option -->
+        <ion-button fill="clear" [color]="grid ? 'color1' : 'color2'" class="ion-no-padding" (click)="showGrid()">
+            <ion-icon slot="icon-only" name="grid"></ion-icon>
+        </ion-button>
 
-    <!-- List view option -->
-    <ion-button fill="clear" [color]="list ? 'color1' : 'color2'" class="ion-no-padding" (click)="showList()">
-      <ion-icon slot="icon-only" name="list"></ion-icon>
-    </ion-button>
-  </div>
-  <!-- End Category View Options -->
+        <!-- List view option -->
+        <ion-button fill="clear" [color]="list ? 'color1' : 'color2'" class="ion-no-padding" (click)="showList()">
+            <ion-icon slot="icon-only" name="list"></ion-icon>
+        </ion-button>
+    </div>
+    <!-- End Category View Options -->
 
-  <!-- Grid View Contents -->
-  <ion-grid>
-    <ion-row *ngIf="grid">
-      <ion-col size="6" *ngFor="let item of categories">
-        <ion-card class="ion-no-padding ion-no-margin" routerLink="/tabs/products" routerDirection="root">
-          <img [src]="item.image" />
-          <ion-card-header>
-            <ion-card-subtitle>{{item.name}}</ion-card-subtitle>
-          </ion-card-header>
-        </ion-card>
-      </ion-col>
-    </ion-row>
+    <!-- Grid View Contents -->
+    <ion-grid>
+        <ion-row *ngIf="grid">
+            <ion-col size="6" *ngFor="let item of categories">
+                <ion-card class="ion-no-padding ion-no-margin" [routerLink]="['/tabs/products']" [queryParams]="{ category: item.subCatCode}" routerDirection="root">
+                    <!-- <img [src]="item.image" /> -->
+                    <ion-card-header>
+                        <ion-card-subtitle>{{item.name}}</ion-card-subtitle>
+                    </ion-card-header>
+                </ion-card>
+            </ion-col>
+        </ion-row>
 
-    <!-- One COlumn View Contents -->
-    <ion-row *ngIf="oneColumn">
-      <ion-col size="12" *ngFor="let item of categories">
-        <ion-card class="ion-no-padding ion-no-margin" routerLink="/tabs/products" routerDirection="root">
-          <img [src]="item.image" />
-          <ion-card-header>
-            <ion-card-subtitle>{{item.name}}</ion-card-subtitle>
-          </ion-card-header>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+        <!-- One COlumn View Contents -->
+        <ion-row *ngIf="oneColumn">
+            <ion-col size="12" *ngFor="let item of categories">
+                <ion-card class="ion-no-padding ion-no-margin" [routerLink]="['/tabs/products']" [queryParams]="{ category: item.subCatCode}" routerDirection="root">
+                    <!-- <img [src]="item.image" /> -->
+                    <ion-card-header>
+                        <ion-card-subtitle>{{item.name}}</ion-card-subtitle>
+                    </ion-card-header>
+                </ion-card>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
 
-  <!-- List View Contents -->
-  <ion-list lines="none" *ngIf="list">
-    <ion-item class="ion-padding-bottom" *ngFor="let item of categories" routerLink="/tabs/products"
-      routerDirection="root">
-      <ion-thumbnail slot="start">
-        <img style="vertical-align: middle;" [src]="item.image">
-      </ion-thumbnail>
+    <!-- List View Contents -->
+    <ion-list lines="none" *ngIf="list">
+        <ion-item class="ion-padding-bottom" *ngFor="let item of categories" [routerLink]="['/tabs/products']" [queryParams]="{ category: item.subCatCode}" routerDirection="root">
+            <ion-thumbnail slot="start">
+                <!-- <img style="vertical-align: middle;" [src]="item.image"> -->
+            </ion-thumbnail>
 
-      <ion-label>
-        <h2> {{ item.name }}</h2>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+            <ion-label>
+                <h2> {{ item.name }}</h2>
+            </ion-label>
+        </ion-item>
+    </ion-list>
 </ion-content>

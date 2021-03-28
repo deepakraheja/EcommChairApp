@@ -10,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
 import { CategoryService } from '../../services/category.service';
 import { Category } from '../../models/category.model';
 import { Router } from '@angular/router';
+import { SubCategoryService } from 'src/app/Service/Subcategory.service';
 
 @Component({
   selector: 'app-category',
@@ -18,12 +19,13 @@ import { Router } from '@angular/router';
 })
 export class CategoryComponent implements OnInit {
 
-  categories: Category[];
+  categories: any[];
   grid: Boolean = true;
   oneColumn: Boolean = false;
   list: Boolean = false;
 
   constructor(private router: Router,
+    private _subcatService: SubCategoryService,
     private categoryService: CategoryService) { }
 
   ngOnInit() {
@@ -32,7 +34,15 @@ export class CategoryComponent implements OnInit {
 
   // Get list of categories
   getCategories() {
-    this.categories = this.categoryService.categoryList();
+
+    let subCatObj = {
+      SideSubCategory: null
+    }
+    this._subcatService.GetSideSubcategory(subCatObj).subscribe(res => {
+      this.categories = res;
+    });
+
+    // this.categories = this.categoryService.categoryList();
   }
 
   // One column view function
