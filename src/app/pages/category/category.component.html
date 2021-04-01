@@ -55,6 +55,7 @@
             <ion-col size="6" *ngFor="let item of categories">
                 <ion-card class="ion-no-padding ion-no-margin" [routerLink]="['/tabs/products']" [queryParams]="{ category: item.subCatCode}" routerDirection="root">
                     <!-- <img [src]="item.image" /> -->
+                    <img src="{{APIURL}}/CategoryImages/{{item.subCategoryID}}/{{item.subCategoryID}}.jpg">
                     <ion-card-header>
                         <ion-card-subtitle>{{item.name}}</ion-card-subtitle>
                     </ion-card-header>
@@ -67,6 +68,7 @@
             <ion-col size="12" *ngFor="let item of categories">
                 <ion-card class="ion-no-padding ion-no-margin" [routerLink]="['/tabs/products']" [queryParams]="{ category: item.subCatCode}" routerDirection="root">
                     <!-- <img [src]="item.image" /> -->
+                    <img src="{{APIURL}}/CategoryImages/{{item.subCategoryID}}/{{item.subCategoryID}}.jpg">
                     <ion-card-header>
                         <ion-card-subtitle>{{item.name}}</ion-card-subtitle>
                     </ion-card-header>
@@ -79,7 +81,7 @@
     <ion-list lines="none" *ngIf="list">
         <ion-item class="ion-padding-bottom" *ngFor="let item of categories" [routerLink]="['/tabs/products']" [queryParams]="{ category: item.subCatCode}" routerDirection="root">
             <ion-thumbnail slot="start">
-                <!-- <img style="vertical-align: middle;" [src]="item.image"> -->
+                <img style="vertical-align: middle;" src="{{APIURL}}/CategoryImages/{{item.subCategoryID}}/{{item.subCategoryID}}.jpg">
             </ion-thumbnail>
 
             <ion-label>

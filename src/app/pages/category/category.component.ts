@@ -11,6 +11,7 @@ import { CategoryService } from '../../services/category.service';
 import { Category } from '../../models/category.model';
 import { Router } from '@angular/router';
 import { SubCategoryService } from 'src/app/Service/Subcategory.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-category',
@@ -18,7 +19,7 @@ import { SubCategoryService } from 'src/app/Service/Subcategory.service';
   styleUrls: ['./category.component.scss'],
 })
 export class CategoryComponent implements OnInit {
-
+  public APIURL = environment.APIURL;
   categories: any[];
   grid: Boolean = true;
   oneColumn: Boolean = false;
