@@ -1,5 +1,5 @@
 <!-- Top Banner Slider -->
-<div id="top-slider" class="ion-padding">
+<!-- <div id="top-slider" class="ion-padding">
   <ion-slides pager="true" [options]="slideOpts">
     <ion-slide>
       <img src="assets/images/banner-1.jpg" />
@@ -12,6 +12,17 @@
     </ion-slide>
     <ion-slide>
       <img src="assets/images/banner-4.jpg" />
+    </ion-slide>
+  </ion-slides>
+</div> -->
+
+<!-- Top Banner Slider -->
+<div id="top-slider" class="ion-padding">
+  <ion-slides pager="true" [options]="slideOpts">
+    <ion-slide *ngFor="let slider of bannerItems">
+      <!-- <img src="assets/images/banner-1.jpg" /> -->
+     
+      <img [src]="ProductImage+slider.ProductId+'/bannerImage/'+slider.bannerImage" />
     </ion-slide>
   </ion-slides>
 </div>

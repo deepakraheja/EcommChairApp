@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { CategoryService } from 'src/app/Service/category.service';
+import { environment } from 'src/environments/environment';
+
 
 @Component({
   selector: 'app-home-top-slider',
@@ -7,6 +10,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeTopSliderComponent implements OnInit {
 
+  public ProductImage = environment.ProductImage;
   // Slider Options
   slideOpts = {
     initialSlide: 0,
@@ -18,9 +22,25 @@ export class HomeTopSliderComponent implements OnInit {
       dynamicBullets: true,
     },
   };
+  bannerItems: any[] = [];
 
-  constructor() { }
+  constructor(
+    public _categoryService: CategoryService,
 
-  ngOnInit() { }
+  ) { }
+
+  ngOnInit() {
+
+    this.BindBanner();
+  }
+
+  BindBanner(): void {
+
+    this._categoryService.GetBannerJson().subscribe(res => {
+      this.bannerItems = res;
+      //sliders = this.bannerItems
+    });
+
+  }
 
 }

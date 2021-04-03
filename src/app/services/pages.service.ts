@@ -40,20 +40,20 @@ export class PagesService {
         icon: 'search'
       },
       {
-        title: 'Deals',
+        title: 'Compare',
         url: '/tabs/tab2',
-        icon: 'gift'
+        icon: 'git-compare'
       },
       {
         title: 'Wishlist',
         url: '/tabs/tab3',
         icon: 'heart'
       },
-      {
-        title: 'Notification',
-        url: '/tabs/tab4',
-        icon: 'notifications-outline'
-      },
+      // {
+      //   title: 'Notification',
+      //   url: '/tabs/tab4',
+      //   icon: 'notifications-outline'
+      // },
       {
         title: 'Orders',
         url: '/tabs/orders',
