@@ -64,7 +64,7 @@ export class BestSellerComponent implements OnInit {
 
     }
     //this.spinner.show();
-    this._prodService.getProductByCategory(productObj).subscribe(products => {
+    this._prodService.getProductByCategoryforApp(productObj).subscribe(products => {
       //  ;
       //this.spinner.hide();
       this.productskart = products;
