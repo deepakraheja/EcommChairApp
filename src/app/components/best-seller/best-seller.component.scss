@@ -5,28 +5,23 @@
         background-position: center center;
         height: 150px;
     }
-
     .product-name {
         padding: 0;
         text-align: left;
-
         h4 {
             font-size: 1rem;
             color: rgba(8, 8, 8, 0.58);
         }
     }
-
     .previous-price {
         text-decoration: line-through;
         font-size: 0.8rem;
     }
-
     ion-fab-button {
         --background: transparent;
         --background-focused: transparent;
         --background-activated: transparent;
     }
-
     .text-bold {
         font-weight: bold;
     }
@@ -35,9 +30,11 @@
 div span.only-show-on-hover {
     visibility: hidden;
 }
-div:hover span.only-show-on-hover  {
+
+div:hover span.only-show-on-hover {
     visibility: visible;
 }
+
 .review-box {
     line-height: normal;
     display: inline-block;

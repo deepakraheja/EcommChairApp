@@ -49,7 +49,10 @@ export class BestSellerComponent implements OnInit {
   async goToProductDetails(product) {
     const modal = await this.modalController.create({
       component: ProductDetailsComponent,
-      componentProps: product
+      componentProps: {
+        rowID: product.rowID,
+        productSizeId: product.productSizeId
+      }
     });
     return await modal.present();
   }
@@ -61,7 +64,6 @@ export class BestSellerComponent implements OnInit {
     let productObj = {
       Active: true,
       Subcatecode: ''
-
     }
     //this.spinner.show();
     this._prodService.getProductByCategoryforApp(productObj).subscribe(products => {
@@ -69,9 +71,6 @@ export class BestSellerComponent implements OnInit {
       //this.spinner.hide();
       this.productskart = products;
       this.productskartselling = products.filter(item => item.topSelling == true);
-
     });
-
   }
-
 }

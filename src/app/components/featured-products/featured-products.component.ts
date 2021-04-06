@@ -34,7 +34,10 @@ export class FeaturedProductsComponent implements OnInit {
   async goToProductDetails(product) {
     const modal = await this.modalController.create({
       component: ProductDetailsComponent,
-      componentProps: product
+      componentProps: {
+        rowID: product.rowID,
+        productSizeId: product.productSizeId
+      }
     });
     return await modal.present();
   }

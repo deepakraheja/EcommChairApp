@@ -26,13 +26,13 @@ export class ProductsComponent implements OnInit {
   public ProductImage = environment.ProductImage;
   // List of prodict
   products: Product[];
-  public productskart: Productkart[] = [];
+  public productskart: any[] = [];
   grid: Boolean = true;
   oneColumn: Boolean = false;
   list: Boolean = false;
 
 
-  public Allproductskart: Productkart[] = [];
+  public Allproductskart: any[] = [];
   public brands: any[] = [];
   public colors: any[] = [];
   public size: any[] = [];
@@ -145,9 +145,13 @@ export class ProductsComponent implements OnInit {
 
   // Go to product details page
   async goToProductDetails(product) {
+    debugger
     const modal = await this.modalController.create({
       component: ProductDetailsComponent,
-      componentProps: product
+      componentProps: {
+        rowID: product.rowID,
+        productSizeId: product.productSizeId
+      }
     });
     return await modal.present();
   }
