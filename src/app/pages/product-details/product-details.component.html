@@ -416,9 +416,9 @@
 <ion-footer class="ion-no-border">
     <ion-toolbar class="ion-padding" transparent>
         <!-- Add To Cart Button -->
-        <ion-button class="add-to-cart" color="color1" [class.disabled]="productkart[0]?.qty==0" expand="block" (click)="addToCart(1)">ADD TO CART
+        <ion-button class="col-md-6  col-sm-6 add-to-cart" color="color1" [class.disabled]="productkart[0]?.qty==0" expand="block" (click)="addToCart(1)">ADD TO CART
         </ion-button>
-        <ion-button class="add-to-cart" color="success" [class.disabled]="productkart[0]?.qty==0" expand="block" (click)="addToCart(2)">BUY NOW
+        <ion-button class="col-md-6  col-sm-6 add-to-cart" color="success" [class.disabled]="productkart[0]?.qty==0" expand="block" (click)="addToCart(2)">BUY NOW
         </ion-button>
     </ion-toolbar>
 </ion-footer>

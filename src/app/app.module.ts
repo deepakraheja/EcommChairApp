@@ -9,7 +9,10 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ProductDetailsComponent } from './pages/product-details/product-details.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
+import { AuthInterceptor } from './pages/auth/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -21,6 +24,8 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
@@ -28,7 +33,13 @@ import { HttpClientModule } from '@angular/common/http';
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    DatePipe,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })

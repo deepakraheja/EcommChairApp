@@ -14,6 +14,8 @@ import { Productkart } from 'src/app/shared/classes/productkart';
 import { productSizeColor } from 'src/app/shared/classes/productsizecolor';
 import { ProductsService } from 'src/app/Service/Products.service';
 import { environment } from 'src/environments/environment';
+import { SigninComponent } from '../auth/signin/signin.component';
+import { CartService } from 'src/app/Service/cart.service';
 
 @Component({
   selector: 'app-product-details',
@@ -63,7 +65,7 @@ export class ProductDetailsComponent implements OnInit {
     },
   };
 
-  
+
   // Slider Options
   slideOpts_Related = {
     initialSlide: 0,
@@ -75,7 +77,8 @@ export class ProductDetailsComponent implements OnInit {
     private storageService: StorageService,
     private modalController: ModalController,
     private _prodService: ProductsService,
-    private navParams: NavParams
+    private navParams: NavParams,
+    private _cartService: CartService
   ) {
     debugger
     const rowID = this.navParams.get('rowID');
@@ -123,7 +126,39 @@ export class ProductDetailsComponent implements OnInit {
 
 
   // Add to Cart Function
-  addToCart(type: Number) {
+  async addToCart(type: Number) {
+    debugger
+    this.user = JSON.parse(localStorage.getItem('LoggedInUser'));
+    // //  
+    if (this.user == null || this.user == undefined) {
+      const modal = await this.modalController.create({
+        component: SigninComponent
+      });
+      return await modal.present();
+    }
+    else {
+      var obj: any[] = [];
+      debugger
+      obj.push({
+        UserID: Number(this.user[0].userID),
+        ProductSizeId: Number(this.SelectedColor[0].productSizeId),
+        Quantity: this.user[0].isPersonal == false ? (this.productkart[0].moq == 0 ? 1 : Number(this.productkart[0].moq)) : 1
+      });
+
+      this._cartService.AddToCart(obj).subscribe(res => {
+        // this.toastrService.success("Product has been successfully added in cart.");
+        // this._SharedDataService.UserCart([]);
+        if (res) {
+          if (type == 1)
+            this.router.navigate(['/cart']);
+          // this.router.navigate(['/shop/cart']);
+          else
+            this.router.navigate(['/checkout']);
+        }
+      });
+      //if (Number(obj.length) > 0) {
+      // const status = await this.productService.addToCartProduct(obj);
+    }
     // this.products = {
     //   id: this.id,
     //   name: this.name,

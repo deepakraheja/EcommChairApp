@@ -23,59 +23,90 @@
 <ion-content id="cart" fullscreen>
 
     <!-- When Cart is Empty -->
-    <ion-grid class="ion-padding" id="empty" *ngIf="cartProducts.length == 0" style="height: 100%">
+    <ion-grid class="ion-padding" id="empty" *ngIf="IsEmptyCart == true" style="height: 100%">
         <ion-row class="ion-align-items-center ion-justify-content-center" style="height: 100%; flex-direction: column">
             <div class="ion-text-center ion-padding">
                 <ion-icon name="cart" style="zoom:5.0;" color="medium"></ion-icon>
                 <h4>Your Cart is Empty</h4>
                 <p>Looks like you haven't added anything to your cart yet</p>
             </div>
+            <ion-button expand="block" color="color1" fill="clear" routerLink="/tabs/tab1" routerDirection="root">
+                continue shopping
+            </ion-button>
         </ion-row>
     </ion-grid>
 
     <!-- Cart Contents -->
-    <div *ngIf="cartProducts.length != 0">
+    <div *ngIf="IsEmptyCart != true">
         <!-- Cart Product List -->
-        <ion-card *ngFor="let item of cartProducts; let i = index">
+        <ion-card *ngFor="let product of productSizeColor; let i = index">
             <ion-list lines="none">
                 <ion-item class="ion-no-padding">
 
                     <!-- Product Image -->
                     <ion-thumbnail slot="start">
-                        <img style="vertical-align: middle;" [src]="item.images[0]">
+                        <img style="vertical-align: middle;" *ngIf="product?.setNo>0" [src]="ProductImage+product?.productId+'/productSetImage/'+product?.setNo+'/'+product?.productImg[0]">
+                        <img style="vertical-align: middle;" *ngIf="product?.setNo==0" [src]="ProductImage+product?.productId+'/frontImage/'+product?.frontImage">
                     </ion-thumbnail>
 
                     <ion-label class="ion-text-wrap">
 
                         <!-- Product Name -->
                         <ion-text color="dark">
-                            <h2> {{ item.name }}</h2>
+                            <h2 [innerHTML]="(product?.productName).split('|')[0]"></h2>
                         </ion-text>
 
                         <!-- Product Price -->
                         <ion-text color="color1">
-                            <p>${{item.discountPrice}}</p>
+                            <h4 *ngIf="product?.setType==2" class="text-black">
+                                {{ (product.salePrice*product.totalPieces).toFixed() | currency:productService?.Currency.currency:'symbol' }}
+                            </h4>&nbsp;
+                            <del *ngIf="product?.setType==2 && product?.perDiscount>0">{{ (product.price*product.totalPieces).toFixed() | currency:productService?.Currency.currency:'symbol' }}</del>
+
+                            <h4 *ngIf="product?.setType!=2" class="text-black">
+
+                                {{ (product.salePrice) | currency:productService?.Currency.currency:'symbol' }}
+                            </h4>&nbsp;
+                            <del *ngIf="product?.setType!=2 && product?.perDiscount>0">{{ product.price | currency:productService?.Currency.currency:'symbol' }}</del> &nbsp;
+                            <h5 class="text-red" *ngIf="product?.setType!=2 && product?.perDiscount>0">
+                                {{ product.perDiscount/product.totalPieces | number:'1.2-2' }}%</h5>
+                            <!-- <p>${{item.discountPrice}}</p> -->
                         </ion-text>
 
+                        <!-- Total Pieces -->
+                        <ion-text color="color2">
+                            <h4>Total Pieces: {{ product.totalPieces }}</h4>
+                            <div>
+                                <h3 *ngIf="product?.setType==1">
+                                    {{ product.salePrice*product.totalPieces | currency:productService?.Currency.currency:'symbol' }}
+                                </h3>
+                                <h3 *ngIf="product?.setType==2">
+                                    {{ (product.salePrice*product.totalPieces).toFixed() | currency:productService?.Currency.currency:'symbol' }}
+                                </h3>
+                                <h3 *ngIf="product?.setType==3">
+                                    {{ product.salePrice | currency:productService?.Currency.currency:'symbol' }}
+                                </h3>
+                            </div>
+                        </ion-text>
                         <!-- Quantity -->
                         <ion-row>
                             <!-- Add More Product Quantity -->
-                            <ion-col (click)="addQuantity(item, i)">
+                            <ion-col (click)="increment(product)">
                                 <ion-icon style="zoom:2.0;" name="add-circle-outline" color="medium"></ion-icon>
                             </ion-col>
 
                             <!-- Total Quantity -->
-                            <ion-col class="ion-text-center">{{item.quantity}}</ion-col>
+                            <ion-col class="ion-text-center">{{product.quantity}}</ion-col>
 
                             <!-- Minus Product Quantity -->
-                            <ion-col (click)="minusQuantity(item, i)">
+                            <ion-col (click)="decrement(product)">
                                 <ion-icon style="zoom:2.0;" name="remove-circle-outline" color="medium"></ion-icon>
                             </ion-col>
                         </ion-row>
                     </ion-label>
 
                     <!-- Remove Product From Cart -->
-                    <ion-icon name="close-circle" slot="end" color="medium" (click)="removeProduct(item, i)"></ion-icon>
+                    <ion-icon name="close-circle" slot="end" color="medium" (click)="removeItem(product)"></ion-icon>
                 </ion-item>
             </ion-list>
         </ion-card>
@@ -84,36 +115,38 @@
         <!-- summary Of Products Price -->
         <ion-list lines="none">
             <ion-item>
+                <ion-label>Total Pieces</ion-label>
+                <ion-note slot="end" color="dark">{{TotalPieces}}</ion-note>
+            </ion-item>
+
+            <ion-item>
                 <ion-label>Sub Total</ion-label>
-                <ion-note slot="end" color="dark">{{total}}</ion-note>
+                <ion-note slot="end" color="dark">{{ Price | currency:productService?.Currency.currency:'symbol'}}</ion-note>
             </ion-item>
 
             <ion-item>
-                <ion-label>Shipping</ion-label>
-                <ion-note slot="end" color="dark">$25</ion-note>
+                <ion-label>Total Discounts</ion-label>
+                <ion-note slot="end" color="dark">{{ Discount | currency:productService?.Currency.currency:'symbol'}}</ion-note>
             </ion-item>
-
-            <ion-item>
-                <ion-label>Tax(10%)</ion-label>
-                <ion-note slot="end" color="dark">$100</ion-note>
-            </ion-item>
-
             <ion-item-divider></ion-item-divider>
 
             <ion-item>
-                <ion-label>Total</ion-label>
-                <ion-note slot="end" color="dark">${{total + 25 + 100}}</ion-note>
+                <ion-label>Total Amount</ion-label>
+                <ion-note slot="end" color="dark">{{ Price-Discount | currency:productService?.Currency.currency:'symbol'}}</ion-note>
             </ion-item>
+            <p *ngIf="Discount>0" class="text-green mb-4">You will save {{ Discount | currency:productService?.Currency.currency:'symbol'}} on this order</p>
         </ion-list>
     </div>
+    <ion-button expand="block" *ngIf="IsEmptyCart != true" color="color1" fill="clear" routerLink="/tabs/tab1" routerDirection="root">
+        continue shopping
+    </ion-button>
 </ion-content>
 
 <!-- Footer -->
 <ion-footer class="ion-no-border">
     <ion-toolbar class="ion-padding" transparent>
         <!-- Checkout Button Option -->
-        <ion-button color="color1" expand="block" (click)="goToCheckout()" *ngIf="cartProducts.length != 0">PROCEED TO
-            CHECKOUT
+        <ion-button color="color1" expand="block" (click)="goToCheckout()" *ngIf="IsEmptyCart != true">PROCEED TO CHECKOUT
         </ion-button>
     </ion-toolbar>
 </ion-footer>

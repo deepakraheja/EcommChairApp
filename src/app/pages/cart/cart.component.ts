@@ -12,6 +12,11 @@ import { ModalController } from '@ionic/angular';
 import { StorageService } from '../../services/storage.service';
 import { Product } from '../../models/product.model';
 import { Router } from '@angular/router';
+import { ProductsService } from 'src/app/Service/Products.service';
+import { SharedDataService } from 'src/app/Service/shared-data.service';
+import { CartService } from 'src/app/Service/cart.service';
+import { productSizeColor } from 'src/app/shared/classes/productsizecolor';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-cart',
@@ -19,22 +24,160 @@ import { Router } from '@angular/router';
   styleUrls: ['./cart.component.scss'],
 })
 export class CartComponent implements OnInit {
-
+  public headers: any = ["COLOR", "SIZE", "QUANTITY", "DELETE"];
+  public products: Product[] = [];
+  public lstCartProduct: any[] = [];
+  public productSizeColor: productSizeColor[] = [];
+  public IsEmptyCart = false;
+  public ProductImage = environment.ProductImage;
+  user: any[] = null;
+  public TotalAmount = 0; TotalPieces = 0; Price = 0; Discount = 0;
+  public SelectedProduct: any;
+  
   cartProducts: Product[] = [];
   total: number = 0;
 
   constructor(public modalController: ModalController,
     public storageService: StorageService,
-    private router: Router
+    private router: Router,
+    public productService: ProductsService,
+    private _SharedDataService: SharedDataService,
+    private _cartService: CartService,
+    // private toastrService: ToastrService,
+    // private spinner: NgxSpinnerService,
+    // private modalService: NgbModal,
+    private _productService: ProductsService
   ) { }
 
   ngOnInit() {
-
+    this._SharedDataService.lstCart.subscribe(res => {
+      this.LoadCart();
+    });
   }
 
   ionViewDidEnter() {
     this.getCartItems();
   }
+
+  LoadCart() {
+    this.user = JSON.parse(localStorage.getItem('LoggedInUser'));
+    if (this.user != null) {
+      let obj = {
+        UserID: this.user[0].userID
+      };
+      //this.spinner.show();
+      this._cartService.GetCartById(obj).subscribe(response => {
+        //  
+        debugger
+        if (response.length == 0)
+          this.IsEmptyCart = true;
+        else
+          this.IsEmptyCart = false;
+        // this.spinner.hide();
+        this.productSizeColor = response;
+        this.getTotal();
+
+      });
+    }
+    else {
+      this.IsEmptyCart = true;
+      this.productSizeColor = [];
+      this.getTotal();
+    }
+
+  }
+
+  
+  getTotal() {
+    this.TotalAmount = 0;
+    this.TotalPieces = 0;
+    this.Price = 0;
+    this.Discount = 0;
+    this.productSizeColor.forEach(element => {
+      this.TotalPieces += element.totalPieces;
+      if (element.setType != 3) {
+        this.Price += element.salePrice * element.totalPieces;
+      }
+      else {
+        this.Price += element.salePrice;
+      }
+
+      //this.TotalAmount += element.salePrice;
+      this.Discount += element.discount
+    });
+    //return TotalAmount;
+  }
+  ColorSize(product) {
+
+    var arr = product.split('|');
+    return arr;
+  }
+
+
+  // Increament
+  increment(product, qty = 1) {
+    //  
+    debugger
+    let obj = [{
+      UserID: Number(this.user[0].userID),
+      ProductSizeId: Number(product.productSizeId),
+      Quantity: qty,
+      SetNo: Number(product.setNo),
+      ProductId: Number(product.productId)
+    }];
+    //this.spinner.show();
+    this._cartService.UpdateToCart(obj).subscribe(res => {
+      // this.toastrService.success("Product quantity has been successfully updated in cart.");
+
+      this.LoadCart();
+      this._SharedDataService.UserCart(this.productSizeColor);
+    });
+    // this.productService.updateCartQuantity(product, qty);
+  }
+
+  // Decrement
+  decrement(product, qty = -1) {
+    //  
+    debugger
+    if (product.quantity > (product.isPersonal == true ? 1 : (product.moq == 0 ? 1 : product.moq))) {
+      let obj = [{
+        UserID: Number(this.user[0].userID),
+        ProductSizeId: Number(product.productSizeId),
+        Quantity: qty,
+        SetNo: Number(product.setNo),
+        ProductId: Number(product.productId)
+      }];
+      //this.spinner.show();
+      this._cartService.UpdateToCart(obj).subscribe(res => {
+        // this.toastrService.success("Product quantity has been successfully updated in cart.");
+        this.LoadCart();
+        this._SharedDataService.UserCart(this.productSizeColor);
+      });
+    }
+    // this.productService.updateCartQuantity(product, qty);
+  }
+
+  
+  public removeItem(product) {
+    this.user = JSON.parse(localStorage.getItem('LoggedInUser'));
+    //  
+    let obj = {
+      CartId: product.cartId,
+      UserID: this.user[0].userID,
+      SetNo: product.setNo,
+      SetType: product.setType,
+      ProductId: product.productId
+    };
+    // this.spinner.show();
+    this._cartService.DelCartById(obj).subscribe(res => {
+      // this.spinner.hide();
+      // this.toastrService.success('Product has been removed successfully from your cart.');
+      this.LoadCart();
+      this._SharedDataService.UserCart([]);
+    });
+  }
+
+
 
   // Get Cart Items From Storage
   getCartItems() {

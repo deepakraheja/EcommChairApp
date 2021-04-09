@@ -9,6 +9,7 @@ import { Productkart } from '../shared/classes/productkart';
   providedIn: 'root'
 })
 export class ProductsService {
+  public Currency = { name: 'Rupees', currency: 'INR', price: 1 } // Default Currency
   public currency: string = 'Rs';
   public catalogMode: boolean = false;
 
