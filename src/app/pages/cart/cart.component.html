@@ -44,7 +44,7 @@
                 <ion-item class="ion-no-padding">
 
                     <!-- Product Image -->
-                    <ion-thumbnail slot="start">
+                    <ion-thumbnail slot="start" (click)="goToProductDetails(product);">
                         <img style="vertical-align: middle;" *ngIf="product?.setNo>0" [src]="ProductImage+product?.productId+'/productSetImage/'+product?.setNo+'/'+product?.productImg[0]">
                         <img style="vertical-align: middle;" *ngIf="product?.setNo==0" [src]="ProductImage+product?.productId+'/frontImage/'+product?.frontImage">
                     </ion-thumbnail>
@@ -55,19 +55,37 @@
                         <ion-text color="dark">
                             <h2 [innerHTML]="(product?.productName).split('|')[0]"></h2>
                         </ion-text>
-
+                        <ion-row>
+                            <div *ngIf="product?.setType>=2">
+                                <span *ngFor="let lst of ColorSize(product?.productName); let i =index;">
+                                    <p *ngIf="i>0">
+                                        {{lst}}
+                                    </p>
+                                </span>
+                            </div>
+                            <!-- <div *ngIf="product?.setType==1"><span>Size:
+        </span><span>{{(product?.productName).split('|')[2]}}</span></div> -->
+                            <div *ngIf="user[0].isPersonal==false" style="color: red;"><span>Minimun Order
+                                    Quantity:
+                                </span><span>{{product?.moq}}</span></div>
+                            <div *ngIf="product?.setType==1"><span>Color:
+                                </span><span>{{(product?.productName).split('|')[1]}}</span></div>
+                        </ion-row>
                         <!-- Product Price -->
                         <ion-text color="color1">
                             <h4 *ngIf="product?.setType==2" class="text-black">
                                 {{ (product.salePrice*product.totalPieces).toFixed() | currency:productService?.Currency.currency:'symbol' }}
                             </h4>&nbsp;
-                            <del *ngIf="product?.setType==2 && product?.perDiscount>0">{{ (product.price*product.totalPieces).toFixed() | currency:productService?.Currency.currency:'symbol' }}</del>
+                            <del *ngIf="product?.setType==2 && product?.perDiscount>0">{{
+                                (product.price*product.totalPieces).toFixed() |
+                                currency:productService?.Currency.currency:'symbol' }}</del>
 
                             <h4 *ngIf="product?.setType!=2" class="text-black">
 
                                 {{ (product.salePrice) | currency:productService?.Currency.currency:'symbol' }}
                             </h4>&nbsp;
-                            <del *ngIf="product?.setType!=2 && product?.perDiscount>0">{{ product.price | currency:productService?.Currency.currency:'symbol' }}</del> &nbsp;
+                            <del *ngIf="product?.setType!=2 && product?.perDiscount>0">{{ product.price |
+                                currency:productService?.Currency.currency:'symbol' }}</del> &nbsp;
                             <h5 class="text-red" *ngIf="product?.setType!=2 && product?.perDiscount>0">
                                 {{ product.perDiscount/product.totalPieces | number:'1.2-2' }}%</h5>
                             <!-- <p>${{item.discountPrice}}</p> -->
@@ -76,6 +94,7 @@
                         <!-- Total Pieces -->
                         <ion-text color="color2">
                             <h4>Total Pieces: {{ product.totalPieces }}</h4>
+                            <br>
                             <div>
                                 <h3 *ngIf="product?.setType==1">
                                     {{ product.salePrice*product.totalPieces | currency:productService?.Currency.currency:'symbol' }}
@@ -121,18 +140,21 @@
 
             <ion-item>
                 <ion-label>Sub Total</ion-label>
-                <ion-note slot="end" color="dark">{{ Price | currency:productService?.Currency.currency:'symbol'}}</ion-note>
+                <ion-note slot="end" color="dark">{{ Price | currency:productService?.Currency.currency:'symbol'}}
+                </ion-note>
             </ion-item>
 
             <ion-item>
                 <ion-label>Total Discounts</ion-label>
-                <ion-note slot="end" color="dark">{{ Discount | currency:productService?.Currency.currency:'symbol'}}</ion-note>
+                <ion-note slot="end" color="dark">{{ Discount | currency:productService?.Currency.currency:'symbol'}}
+                </ion-note>
             </ion-item>
             <ion-item-divider></ion-item-divider>
 
             <ion-item>
                 <ion-label>Total Amount</ion-label>
-                <ion-note slot="end" color="dark">{{ Price-Discount | currency:productService?.Currency.currency:'symbol'}}</ion-note>
+                <ion-note slot="end" color="dark">{{ Price-Discount | currency:productService?.Currency.currency:'symbol'}}
+                </ion-note>
             </ion-item>
             <p *ngIf="Discount>0" class="text-green mb-4">You will save {{ Discount | currency:productService?.Currency.currency:'symbol'}} on this order</p>
         </ion-list>

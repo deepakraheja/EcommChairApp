@@ -17,6 +17,7 @@ import { SharedDataService } from 'src/app/Service/shared-data.service';
 import { CartService } from 'src/app/Service/cart.service';
 import { productSizeColor } from 'src/app/shared/classes/productsizecolor';
 import { environment } from 'src/environments/environment';
+import { ProductDetailsComponent } from '../product-details/product-details.component';
 
 @Component({
   selector: 'app-cart',
@@ -56,7 +57,7 @@ export class CartComponent implements OnInit {
   }
 
   ionViewDidEnter() {
-    this.getCartItems();
+    this.LoadCart();
   }
 
   LoadCart() {
@@ -176,6 +177,19 @@ export class CartComponent implements OnInit {
       this._SharedDataService.UserCart([]);
     });
   }
+
+ // Go to product details page
+ async goToProductDetails(product) {
+  debugger
+  const modal = await this.modalController.create({
+    component: ProductDetailsComponent,
+    componentProps: {
+      rowID: product.rowID,
+      productSizeId: product.productSizeId
+    }
+  });
+  return await modal.present();
+}
 
 
 

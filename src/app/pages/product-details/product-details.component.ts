@@ -149,11 +149,15 @@ export class ProductDetailsComponent implements OnInit {
         // this.toastrService.success("Product has been successfully added in cart.");
         // this._SharedDataService.UserCart([]);
         if (res) {
-          if (type == 1)
+          if (type == 1) {
+            this.dismiss();
             this.router.navigate(['/cart']);
+          }
           // this.router.navigate(['/shop/cart']);
-          else
+          else {
+            this.dismiss();
             this.router.navigate(['/checkout']);
+          }
         }
       });
       //if (Number(obj.length) > 0) {
