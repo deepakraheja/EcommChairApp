@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Product } from '../../models/product.model';
 import { ProductsService } from '../../services/products.service';
 import { ModalController } from '@ionic/angular';
 import { ProductDetailsComponent } from '../../pages/product-details/product-details.component';
+import { Productkart } from 'src/app/shared/classes/productkart';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-featured-products',
@@ -12,7 +14,9 @@ import { ProductDetailsComponent } from '../../pages/product-details/product-det
 export class FeaturedProductsComponent implements OnInit {
 
   products: Product[];
+  @Input() productskart: Productkart[] = [];
 
+   public ProductImage = environment.ProductImage;
   // Slider Options
   slideOpts = {
     initialSlide: 0,
@@ -24,7 +28,7 @@ export class FeaturedProductsComponent implements OnInit {
     private modalController: ModalController) { }
 
   ngOnInit() {
-    this.getProductList();
+    //this.getProductList();
   }
 
   getProductList() {

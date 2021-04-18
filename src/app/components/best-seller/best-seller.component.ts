@@ -15,8 +15,10 @@ import { environment } from 'src/environments/environment';
 export class BestSellerComponent implements OnInit {
 
   //products: Product[];
-  public productskart: Productkart[] = [];
-  public productskartselling: Productkart[] = [];
+  @Input() productskart: Productkart[] = [];
+
+  //public productskartselling: Productkart[] = [];
+
   public ProductImage = environment.ProductImage;
   public user: any[] = JSON.parse(localStorage.getItem('LoggedInUser'));
 
@@ -39,7 +41,7 @@ export class BestSellerComponent implements OnInit {
 
   ngOnInit() {
     //this.getProductList();
-    this.BindProductByCategory();
+    //this.BindProductByCategory();
   }
 
   // getProductList() {
@@ -59,18 +61,19 @@ export class BestSellerComponent implements OnInit {
 
 
   //Added on 08/07/2020
-  BindProductByCategory() {
+  // BindProductByCategory() {
+  //    debugger
+  //   // let productObj = {
+  //   //   Active: true,
+  //   //   Subcatecode: ''
+  //   // }
+  //   // //this.spinner.show();
+  //   // this._prodService.GetBestSellerforAppJson(productObj).subscribe(products => {
+  //   //   //  ;
+  //   //   //this.spinner.hide();
+  //   //   debugger
 
-    let productObj = {
-      Active: true,
-      Subcatecode: ''
-    }
-    //this.spinner.show();
-    this._prodService.getProductByCategoryforApp(productObj).subscribe(products => {
-      //  ;
-      //this.spinner.hide();
-      this.productskart = products;
-      this.productskartselling = products.filter(item => item.topSelling == true);
-    });
-  }
+  //   this.productskartselling = this.products.filter(item => item.topSelling == true);
+  //   // });
+  // }
 }

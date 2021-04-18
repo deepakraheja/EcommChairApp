@@ -29,12 +29,12 @@
 
 
 <!-- Main Contents of Page -->
-<ion-content id="product-details" fullscreen>
+<ion-content id="product-details">
     <!-- Slider of Product Images -->
     <ion-slides pager="true" [options]="slideOpts">
         <ion-slide *ngFor="let image of productkart[0]?.productSizeColor[bigProductImageIndex]?.productImg; index as i">
-            <img [src]="i==0?ProductImage+productkart[0]?.productID+'/frontImage/'+productkart[0]?.frontImage:ProductImage+productkart[0]?.productID+'/productColorImage/'+productkart[0]?.productSizeColor[bigProductImageIndex]?.productSizeColorId+'/'+productkart[0]?.productSizeColor[bigProductImageIndex]?.productImg[i]"
-            />
+            <img
+                [src]="i==0?ProductImage+productkart[0]?.productID+'/frontImage/'+productkart[0]?.frontImage:ProductImage+productkart[0]?.productID+'/productColorImage/'+productkart[0]?.productSizeColor[bigProductImageIndex]?.productSizeColorId+'/'+productkart[0]?.productSizeColor[bigProductImageIndex]?.productImg[i]" />
 
             <!-- Wish Button or Product Like/Dislike Button Option -->
             <ion-fab vertical="top" horizontal="end">
@@ -48,13 +48,13 @@
 
     <!-- Product Price -->
     <ion-row class="ion-padding">
-        <ion-text color="color1" class="price">${{productkart[0].businessPrice}} &nbsp;</ion-text>
-        <span class="previous-price"> ${{productkart[0].price}}</span>
+        <ion-text color="color1" class="price">{{productkart[0]?.businessPrice}} &nbsp;</ion-text>
+        <span class="previous-price"> {{productkart[0]?.price}}</span>
     </ion-row>
 
     <!-- Product Name -->
     <ion-row class="ion-padding-start product-name">
-        <ion-text>{{productkart[0].productName}}</ion-text>
+        <ion-text>{{productkart[0]?.productName}}</ion-text>
     </ion-row>
     <icon-row class="ion-padding">
         <div class="product-right">
@@ -62,7 +62,8 @@
                 {{productkart[0]?.productTotalReview[0]?.averageRating}}
                 ★
             </span>&nbsp;
-            <span *ngIf="productkart[0]?.productTotalReview[0]?.totalRating>0">{{productkart[0]?.productTotalReview[0]?.totalRating}}
+            <span
+                *ngIf="productkart[0]?.productTotalReview[0]?.totalRating>0">{{productkart[0]?.productTotalReview[0]?.totalRating}}
                 Ratings &
                 {{productkart[0]?.productTotalReview[0]?.totalReview}} Reviews
             </span>
@@ -221,7 +222,7 @@
     <!-- Product Description -->
     <ion-row class="ion-padding">
         <h6 class="product-title">Product Details</h6>
-        <ion-text color="medium" [innerHTML]="productkart[0].shortDetails"></ion-text>
+        <ion-text color="medium" [innerHTML]="productkart[0]?.shortDetails"></ion-text>
     </ion-row>
     <icon-row class="ion-padding">
         <div class="col-md-12 border-grey" *ngIf="productkart[0]?.productTotalReview[0]?.totalRating>0">
@@ -318,7 +319,8 @@
 
                         </div>
                         <div class="col-md-12 pt-0 pl-4 pb-3">
-                            <p>{{review.name}} <i class="fa fa-check-circle"></i> Certified Buyer, {{review.city}} {{review.createdDate | date : 'dd/MM/yyyy'}}</p>
+                            <p>{{review.name}} <i class="fa fa-check-circle"></i> Certified Buyer, {{review.city}}
+                                {{review.createdDate | date : 'dd/MM/yyyy'}}</p>
                         </div>
 
                     </div>
@@ -335,7 +337,9 @@
                         <ion-card class="ion-no-margin">
                             <!-- <div class="card-img" [style.background-image]="'url(' + item.images[0] + ')'"
                     (click)="goToProductDetails(item)"></div> -->
-                            <div class="card-img" [style.background-image]="'url(' +  ProductImage+item.productID+'/frontImage/'+item.frontImage + ')'" (click)="goToProductDetails(item)"></div>
+                            <div class="card-img"
+                                [style.background-image]="'url(' +  ProductImage+item.productID+'/frontImage/'+item.frontImage + ')'"
+                                (click)="goToProductDetails(item)"></div>
                             <h5 class="mb-4">
                                 <span class="review-box" *ngIf="item?.totalRating>0"> {{(item?.averageRating)}}
                                     ★</span>&nbsp;
@@ -409,6 +413,18 @@
             </ion-col>
         </ion-row>
     </ion-radio-group> -->
+  <!-- Add To Cart Button -->
+    <!-- <ion-toolbar class="ion-padding" transparent>
+      
+        <ion-button class="col-md-6  col-sm-6 add-to-cart" color="color1" [class.disabled]="productkart[0]?.qty==0"
+            expand="block" (click)="addToCart(1)">ADD TO CART
+        </ion-button>
+        <ion-button class="col-md-6  col-sm-6 add-to-cart" color="success" [class.disabled]="productkart[0]?.qty==0"
+            expand="block" (click)="addToCart(2)">BUY NOW
+        </ion-button>
+    </ion-toolbar> -->
+    <br>
+    <br>
 </ion-content>
 
 
@@ -416,9 +432,11 @@
 <ion-footer class="ion-no-border">
     <ion-toolbar class="ion-padding" transparent>
         <!-- Add To Cart Button -->
-        <ion-button class="col-md-6  col-sm-6 add-to-cart" color="color1" [class.disabled]="productkart[0]?.qty==0" expand="block" (click)="addToCart(1)">ADD TO CART
+        <ion-button class="col-md-6  col-sm-6 add-to-cart" color="color1" [class.disabled]="productkart[0]?.qty==0"
+            expand="block" (click)="addToCart(1)">ADD TO CART
         </ion-button>
-        <ion-button class="col-md-6  col-sm-6 add-to-cart" color="success" [class.disabled]="productkart[0]?.qty==0" expand="block" (click)="addToCart(2)">BUY NOW
+        <ion-button class="col-md-6  col-sm-6 add-to-cart" color="success" [class.disabled]="productkart[0]?.qty==0"
+            expand="block" (click)="addToCart(2)">BUY NOW
         </ion-button>
     </ion-toolbar>
 </ion-footer>

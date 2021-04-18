@@ -16,6 +16,7 @@ import { Productkart } from 'src/app/shared/classes/productkart';
 import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 import { ProductsService } from 'src/app/Service/Products.service';
 import { environment } from 'src/environments/environment';
+import { LoadingService } from 'src/app/Service/loading.service';
 
 @Component({
   selector: 'app-products',
@@ -52,7 +53,10 @@ export class ProductsComponent implements OnInit {
     private router: Router,
     private productsService: ProductsService,
     private _prodService: ProductsService,
-    public modalController: ModalController) {
+    public modalController: ModalController,
+    public loading: LoadingService
+  ) {
+
     this.route.queryParams.subscribe(params => {
       this.brands = params.brand ? params.brand.split(",") : [];
       this.colors = params.color ? params.color.split(",") : [];
@@ -74,6 +78,7 @@ export class ProductsComponent implements OnInit {
   }
 
   BindProductByCategory() {
+    this.loading.present();
     // this.spinner.show();
     this.route.queryParams.subscribe((params: Params) => {
 
@@ -83,20 +88,24 @@ export class ProductsComponent implements OnInit {
         Subcatecode: category == 'chair' ? '' : category
       }
       debugger
-      this._prodService.getProductByCategory(productObj).subscribe(products => {
-        let FilteredProduct = products;
-        this.Allproductskart = products;
-        this.route.paramMap.subscribe((params: ParamMap) => {
+      this._prodService.getProductByCategory(productObj).subscribe(res => {
+        let FilteredProduct = res;
 
+        this.Allproductskart = res;
+        this.route.paramMap.subscribe((params: ParamMap) => {
+          debugger
           let type = params.get('type');
-          if (type == 'Refilling') {
-            FilteredProduct = products.filter(a => a.featured == true);
+          if (type == 'bestseller') {
+            FilteredProduct = res.filter(a => a.topSelling == true);
           }
-          else if (type == 'BestSellers') {
-            FilteredProduct = products.filter(a => a.topSelling == true);
+          else if (type == 'NewProduct') {
+            FilteredProduct = res.filter(a => a.latest == true);
+          }
+          else if (type == 'OnSale') {
+            FilteredProduct = res.filter(a => a.onSale == true);
           }
           else
-            this.productskart = products;
+            this.productskart = res;
 
           let BrandFilter: any[] = [];
           if (this.brands.length > 0) {
@@ -110,6 +119,7 @@ export class ProductsComponent implements OnInit {
             FilteredProduct = BrandFilter;
           }
           debugger
+          this.productskart = FilteredProduct;
           if (this.searchQuery != '' && this.searchQuery != null)
             // searchQuery Filter
             this.productskart = this.productskart.filter(item => (item.productName).toLowerCase().indexOf((this.searchQuery).toLowerCase()) >= 0)
@@ -119,16 +129,19 @@ export class ProductsComponent implements OnInit {
           // this.productskart = this.productService.sortProducts(FilteredProduct, this.sortBy);
           // Price Filter
           this.productskart = this.productskart.filter(item => item.price >= this.minPrice && item.price <= this.maxPrice)
+
           if (this.searchQuery != '' && this.searchQuery != null)
             // searchQuery Filter
             this.productskart = this.productskart.filter(item => (item.productName).toLowerCase().indexOf((this.searchQuery).toLowerCase()) >= 0)
-          ////  
+         
+            this.loading.dismiss();
+            ////  
           // Paginate Products
           // this.paginate = this.productService.getPager(this.productskart.length, +this.pageNo);     // get paginate object from service
           // this.productskart = this.productskart.slice(this.paginate.startIndex, this.paginate.endIndex + 1); // get current page of items
           // setTimeout(() => this.spinner.hide(), 2000);
         });
-
+           
       });
     });
   }

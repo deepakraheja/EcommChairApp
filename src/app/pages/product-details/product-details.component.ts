@@ -8,7 +8,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Product } from '../../models/product.model';
 import { StorageService } from '../../services/storage.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController, NavParams } from '@ionic/angular';
 import { Productkart } from 'src/app/shared/classes/productkart';
 import { productSizeColor } from 'src/app/shared/classes/productsizecolor';
@@ -16,6 +16,7 @@ import { ProductsService } from 'src/app/Service/Products.service';
 import { environment } from 'src/environments/environment';
 import { SigninComponent } from '../auth/signin/signin.component';
 import { CartService } from 'src/app/Service/cart.service';
+import { LoadingService } from 'src/app/Service/loading.service';
 
 @Component({
   selector: 'app-product-details',
@@ -73,44 +74,79 @@ export class ProductDetailsComponent implements OnInit {
     slidesPerView: 2,
   };
 
-  constructor(public router: Router,
+  constructor(private route: ActivatedRoute,
+    private router: Router,
     private storageService: StorageService,
     private modalController: ModalController,
     private _prodService: ProductsService,
-    private navParams: NavParams,
-    private _cartService: CartService
+    private _cartService: CartService,
+    public loading: LoadingService
   ) {
-    debugger
-    const rowID = this.navParams.get('rowID');
-    const productSizeId = this.navParams.get('productSizeId');
 
-    let productObj = {
-      rowID: rowID,
-      productSizeId: Number(productSizeId)
-    }
-    this.SelectedColor = [];
-    this.SelectedColor.push({
-      productSizeId: Number(productSizeId)
-    });
-    this._prodService.GetWithoutSetProductByRowID(productObj).subscribe(res => {
-      debugger
-      if (!res) { // When product is empty redirect 404
-        this.router.navigateByUrl('/pages/404', { skipLocationChange: true });
-      } else {
 
-        this.productkart = res;
-        this.recentlyProduct = res[0].userRecentlyProduct;
-        this.RelatedProducts = res[0].relatedProduct;
-        debugger
-        //this.BindRelatedProductsByCategory(product[0].subcatecode);
-      }
-      // setTimeout(() => this.spinner.hide(), 1000);
-    });
+
+
+
+
+    // const rowID = this.navParams.get('rowID');
+    // const productSizeId = this.navParams.get('productSizeId');
+
+    // let productObj = {
+    //   rowID: rowID,
+    //   productSizeId: Number(productSizeId)
+    // }
+    // this.SelectedColor = [];
+    // this.SelectedColor.push({
+    //   productSizeId: Number(productSizeId)
+    // });
+    // this._prodService.GetWithoutSetProductByRowID(productObj).subscribe(res => {
+    //   debugger
+    //   if (!res) { // When product is empty redirect 404
+    //     this.router.navigateByUrl('/pages/404', { skipLocationChange: true });
+    //   } else {
+
+    //     this.productkart = res;
+    //     this.recentlyProduct = res[0].userRecentlyProduct;
+    //     this.RelatedProducts = res[0].relatedProduct;
+    //     debugger
+    //     //this.BindRelatedProductsByCategory(product[0].subcatecode);
+    //   }
+    //   // setTimeout(() => this.spinner.hide(), 1000);
+    // });
 
   }
 
   ngOnInit() {
     debugger
+    this.loading.present();
+    this.route.params.subscribe(params => {
+      const productid = params['rowID'];
+      const productSizeId = params['productSizeId'];
+
+      let productObj = {
+        rowID: productid,
+        productSizeId: Number(productSizeId)
+      }
+      this.SelectedColor = [];
+      this.SelectedColor.push({
+        productSizeId: Number(productSizeId)
+      });
+
+      debugger
+      this._prodService.GetWithoutSetProductByRowID(productObj).subscribe(product => {
+        if (!product) { // When product is empty redirect 404
+          // this.router.navigateByUrl('/pages/404', { skipLocationChange: true });
+        } else {
+          debugger
+          this.productkart = product;
+          this.recentlyProduct = product[0].userRecentlyProduct;
+          this.RelatedProducts = product[0].relatedProduct;
+          debugger
+          //this.BindRelatedProductsByCategory(product[0].subcatecode);
+        }
+        // setTimeout(() => this.spinner.hide(), 1000);
+      });
+    });
   }
 
   async goToProductDetails(product) {
@@ -188,8 +224,9 @@ export class ProductDetailsComponent implements OnInit {
 
   // Back to previous page function
   dismiss() {
-    this.modalController.dismiss({
-      'dismissed': true
-    })
+    // this.modalController.dismiss({
+    //   'dismissed': true
+    // })
+    this.router.navigate(['./tabs/tab1']);
   }
 }

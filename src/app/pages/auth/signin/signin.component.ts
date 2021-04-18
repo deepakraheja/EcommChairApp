@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
 import { UsersService } from 'src/app/Service/users.service';
 
@@ -14,7 +15,8 @@ export class SigninComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userService: UsersService,
     private modalController: ModalController,
-    public toastController: ToastController
+    public toastController: ToastController,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -80,5 +82,10 @@ export class SigninComponent implements OnInit {
         }
       });
     }
+  }
+
+  SignUp(){
+    this.dismiss();
+    this.router.navigate(['/signup']);
   }
 }

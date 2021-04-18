@@ -13,7 +13,11 @@
         <ion-buttons slot="start">
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
-
+        <!-- Back to previous page -->
+        <ion-buttons slot="start">
+            <ion-back-button color="white" default-href="" [routerLink]="['/tabs/tab1']" text="" icon="arrow-back">
+            </ion-back-button>
+        </ion-buttons>
         <!-- Title of page -->
         <ion-title>Products</ion-title>
 
@@ -34,7 +38,8 @@
     <div class="ion-text-end">
 
         <!-- One Column Option -->
-        <ion-button fill="clear" [color]="oneColumn ? 'color1' : 'color2'" class="ion-no-padding" (click)="showOneColumn()">
+        <ion-button fill="clear" [color]="oneColumn ? 'color1' : 'color2'" class="ion-no-padding"
+            (click)="showOneColumn()">
             <ion-icon slot="icon-only" name="square"></ion-icon>
         </ion-button>
 
@@ -59,7 +64,9 @@
                 <ion-card class="ion-no-margin">
 
                     <!-- Product Image -->
-                    <div class="card-img" [style.background-image]="'url(' + ProductImage+item?.productID+'/frontImage/'+item?.frontImage + ')'" (click)="goToProductDetails(item)"></div>
+                    <div class="card-img"
+                        [style.background-image]="'url(' + ProductImage+item?.productID+'/frontImage/'+item?.frontImage + ')'"
+                        [routerLink]="['/tabs/products/productDetails/'+item?.rowID+'/'+item?.productSizeId]"></div>
 
                     <!-- Wish Button or Product Like/Dislike Button Option -->
                     <ion-fab vertical="top" horizontal="end">
@@ -71,7 +78,9 @@
                     </ion-fab>
 
                     <!-- Product Contents -->
-                    <ion-card-content (click)="goToProductDetails(item)">
+                    <ion-card-content
+                        [routerLink]="['/tabs/products/productDetails/'+item.rowID+'/'+item.productSizeId]"
+                        routerDirection="root">
                         <ion-row>
                             <ion-text color="color1">${{item.businessPrice}} &nbsp;</ion-text>
                             <span class="previous-price"> ${{item.businessPrice}}</span>
@@ -92,7 +101,9 @@
                 <ion-card class="ion-no-margin">
 
                     <!-- Product Image -->
-                    <div class="card-img" [style.background-image]="'url(' + ProductImage+item?.productID+'/frontImage/'+item?.frontImage + ')'" (click)="goToProductDetails(item)"></div>
+                    <div class="card-img"
+                        [style.background-image]="'url(' + ProductImage+item?.productID+'/frontImage/'+item?.frontImage + ')'"
+                        (click)="goToProductDetails(item)"></div>
 
                     <!-- Wish Button or Product Like/Dislike Button Option -->
                     <ion-fab vertical="top" horizontal="end">
@@ -104,7 +115,9 @@
                     </ion-fab>
 
                     <!-- Product Contents -->
-                    <ion-card-content (click)="goToProductDetails(item)">
+                    <ion-card-content
+                        [routerLink]="['/tabs/products/productDetails/'+item.rowID+'/'+item.productSizeId]"
+                        routerDirection="root">
                         <ion-row>
                             <ion-text color="color1">${{item.businessPrice}} &nbsp;</ion-text>
                             <span class="previous-price"> ${{item.businessPrice}}</span>
@@ -121,12 +134,14 @@
     <!-- List View Contents -->
     <div id="list" *ngIf="list">
         <ion-card *ngFor="let item of productskart;">
-            <ion-list lines="none" (click)="goToProductDetails(item)">
+            <ion-list lines="none" [routerLink]="['/tabs/products/productDetails/'+item.rowID+'/'+item.productSizeId]"
+                routerDirection="root">
                 <ion-item class="ion-no-padding">
 
                     <!-- Product Image -->
                     <ion-thumbnail slot="start">
-                        <img style="vertical-align: middle;" [src]="ProductImage+item?.productID+'/frontImage/'+item?.frontImage">
+                        <img style="vertical-align: middle;"
+                            [src]="ProductImage+item?.productID+'/frontImage/'+item?.frontImage">
                     </ion-thumbnail>
 
                     <!-- Wish Button or Product Like/Dislike Button Option -->

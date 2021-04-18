@@ -9,7 +9,7 @@
 <ion-header class="ion-no-border">
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button color="color1" default-href="" text="" (click)="dismiss()" icon="arrow-back" routerLink="/landing" routerDirection="root">
+            <ion-back-button color="color1" default-href="" text="" (click)="dismiss()" icon="arrow-back">
             </ion-back-button>
         </ion-buttons>
     </ion-toolbar>
@@ -44,7 +44,7 @@
             </ion-item>
 
             <!-- Forget Password Button -->
-            <ion-button expand="block" color="color2" fill="clear" slot="end" routerLink="/forget-password" routerDirection="root">
+            <ion-button expand="block" color="color2" fill="clear" slot="end" routerLink="/forget-password">
                 Forget Password?
             </ion-button>
 
@@ -68,7 +68,7 @@
 
     <!-- SignUp Buttons -->
     <div class="section_three">
-        <ion-button fill="clear" color="color2" routerLink="/signup" routerDirection="root">
+        <ion-button fill="clear" color="color2" (click)="SignUp()">
             <span>Don't have an account? <b>Sign Up</b></span>
         </ion-button>
     </div>

@@ -40,9 +40,9 @@ export class ProductsService {
     );
   }
 
-  getProductByCategoryforApp(_categoryObj: any): Observable<any[]> {
+  GetBestSellerforAppJson(_categoryObj: any): Observable<any[]> {
 
-    this._methodName = "GetProductBySubcatecodeforApp";
+    this._methodName = "GetBestSellerforAppJson";
     this._param = _categoryObj;
     return this._http.post<any[]>(
       this._url + this._methodName, this._param

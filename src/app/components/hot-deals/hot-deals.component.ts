@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DealsService } from '../../services/deals.service';
+import { Productkart } from 'src/app/shared/classes/productkart';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-hot-deals',
@@ -7,7 +9,9 @@ import { DealsService } from '../../services/deals.service';
   styleUrls: ['./hot-deals.component.scss'],
 })
 export class HotDealsComponent implements OnInit {
+  @Input() productskart: Productkart[] = [];
 
+  public ProductImage = environment.ProductImage;
   // Slider Options
   slideOpts = {
     initialSlide: 0,

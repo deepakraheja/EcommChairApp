@@ -7,72 +7,105 @@
 
 <!-- Header -->
 <ion-header class="ion-no-border">
-  <ion-toolbar>
-    <!-- Back To Landing Page -->
-    <ion-buttons slot="start">
-      <ion-back-button color="color1" default-href="" text="" icon="arrow-back" routerLink="/landing"
-        routerDirection="root">
-      </ion-back-button>
-    </ion-buttons>
-  </ion-toolbar>
+    <ion-toolbar>
+        <!-- Back To Landing Page -->
+        <ion-buttons slot="start">
+            <ion-back-button color="color1" default-href="" text="" icon="arrow-back" routerLink="/landing" routerDirection="root">
+            </ion-back-button>
+        </ion-buttons>
+    </ion-toolbar>
 </ion-header>
 
 <!-- Contents -->
 <ion-content id="signup" fullscreen>
-  <div class="section_one">
-    <h2>SIGN UP</h2>
-    <p>Fill the details & create your account</p>
-  </div>
+    <ion-item class="section_one">
+        <h2>SIGN UP</h2>
+        <p>Fill the details & create your account</p>
+    </ion-item>
 
-  <!-- SignUp Form -->
-  <div class="section_two ion-padding">
-    <form class="ion-padding">
-      <!-- Name -->
-      <ion-item>
-        <ion-label>
-          <ion-icon name="person" color="color2"></ion-icon>
-        </ion-label>
-        <ion-input type="text" placeholder="Name" name="name"></ion-input>
-      </ion-item>
+    <ion-item class="row">
+        <ion-item class="col-md-6 offset-md-3 mb-5">
 
-      <!-- Email -->
-      <ion-item class="ion-padding-top">
-        <ion-label>
-          <ion-icon name="mail" color="color2"></ion-icon>
-        </ion-label>
-        <ion-input type="email" placeholder="Email" name="email"></ion-input>
-      </ion-item>
+            <ion-item class="theme-card">
 
-      <!-- Phone Number -->
-      <ion-item class="ion-padding-top">
-        <ion-label>
-          <ion-icon name="call" color="color2"></ion-icon>
-        </ion-label>
-        <ion-input type="number" placeholder="Phone Number" name="phone"></ion-input>
-      </ion-item>
+                <form class="theme-form" [formGroup]="RegistrationForm">
 
-      <!-- Password -->
-      <ion-item class="ion-padding-top">
-        <ion-label>
-          <ion-icon name="eye" color="color2"></ion-icon>
-        </ion-label>
-        <ion-input type="password" placeholder="Password" name="password"></ion-input>
-      </ion-item>
+                    <ion-item class="form-group">
+                        <ion-label>Mobile Number</ion-label>
+                        <ion-item class="input-group">
+                            <ion-item class="input-group-prepend india-code">
+                                <ion-item class="input-group-text">+91</ion-item>
+                            </ion-item>
+                            <ion-input autofocus type="text" id="MobileNumber" class="form-control" [readonly]="mobileOTP" (keypress)="keytab($event)" placeholder="Mobile Number" maxlength="10" autocomplete="off" (keydown)="keydownEvent($event)" [ngClass]="{ 'is-invalid': submitted && f.mobileNo.errors }"
+                                formControlName="mobileNo"></ion-input>
 
-      <!-- SignUp Button -->
-      <div class="buttons ion-padding-top">
-        <ion-button expand="block" color="color1" routerLink="/tabs/tab1" routerDirection="root">
-          <ion-text><strong>SIGN UP</strong></ion-text>
-        </ion-button>
+                            <ion-item *ngIf="mobileOTP" class="input-group-append">
+                                <span class="input-group-text success-check">
+                                  <i class="fa fa-check"></i>
+                              </span>
+                            </ion-item>
 
-        <p>Or via social media</p>
+                            <ion-button *ngIf="!mobileOTP" #otp class="btn btn-sm btn-success" type="button" autofocus [ngClass]="{'btn-loading': loginStart}" (click)="validateAndCheckMobile();">Send OTP
+                            </ion-button>
 
-        <a href="" target="_blank" class="btn-social btn-facebook"><i class="fab fa-facebook-f"></i></a>
-        <a href="" target="_blank" class="btn-social btn-google-plus"><i class="fab fa-google-plus-g"></i></a>
-        <a href="" target="_blank" class="btn-social btn-instagram"><i class="fab fa-instagram"></i></a>
-        <a href="" target="_blank" class="btn-social btn-twitter"><i class="fab fa-twitter"></i></a>
+                        </ion-item>
 
-      </div>
-    </form>
-  </div>
+                    </ion-item>
+
+
+                    <ion-item class="form-group" *ngIf="mobileOTP">
+                        <h6 class="text-center" style="color: #969696">Resend OTP in:<b> {{counter}}
+                              second(s)</b>
+                        </h6>
+                    </ion-item>
+                    <ion-item *ngIf="mobileOTP">
+
+
+                        <ion-item class="otpContainer">
+                            <ion-label>OTP sent to Mobile</ion-label><span style="color:red">*</span>
+                            <ion-item>
+                                <ion-input type="text" id="txtemail" class="form-control" formControlName="mobileotp" maxlength='6' #SetFocus style="width: 605px;" id="txtverify"></ion-input>
+
+                                <ion-item *ngIf="submitted && f.mobileotp.errors" class="invalid-feedback">
+                                    <ion-item *ngIf="f.mobileotp.errors.required">OTP is required</ion-item>
+
+                                </ion-item>
+                            </ion-item>
+                        </ion-item>
+                        <br>
+                        <ion-item class="form-group">
+                            <ion-label for="review">Set Password</ion-label><span style="color:red">*</span>
+                            <ion-item class="input-group">
+                                <ion-input type="{{inputType}}" class="form-control" id="review" id="password" formControlName="password" autocomplete="off" maxlength="20" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" required=""></ion-input>
+                                <ion-item class="input-group-append frm-icon" (click)="hideShowPassword()">
+                                    <span class="input-group-text">
+                                      <i class="{{class}}"></i>
+                                  </span>
+                                </ion-item>
+
+                            </ion-item>
+
+                            <ion-item *ngIf="submitted && f.password.errors" class="Customerror">
+                                <ion-item *ngIf="f.password.errors.required">Password is required</ion-item>
+
+                            </ion-item>
+                            <ion-item *ngIf="(submitted) && RegistrationForm.controls.password.errors?.minlength" class="Customerror">
+                                Password must be at least 8 characters.
+                            </ion-item>
+
+                        </ion-item>
+                        <ion-item class="mt-3 text-center">
+                            <ion-button class="btn btn-primary px-4" type="submit" [ngClass]="{'btn-loading': VerifyStart}" (click)=" CreateRegistration();">CREATE ACCOUNT
+                            </ion-button>
+
+                        </ion-item>
+                    </ion-item>
+                    <ion-item class=" text-center mt-4 font-weight-light">
+                        Already have an account? <a href="javaScript:void(0);" (click)="Login()" class="text-primary">Login</a>
+                    </ion-item>
+
+                </form>
+            </ion-item>
+        </ion-item>
+    </ion-item>
 </ion-content>

@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 
 import { ProductsComponent } from './products.component';
 import { FilterComponent } from '../filter/filter.component';
+import { ProductDetailsComponent } from '../product-details/product-details.component';
 
 
 @NgModule({
@@ -17,10 +18,20 @@ import { FilterComponent } from '../filter/filter.component';
       {
         path: '',
         component: ProductsComponent
+      },
+      {
+        path: 'Showall/:type',
+        component: ProductsComponent
+      },
+      {
+        path: 'productDetails/:rowID/:productSizeId',
+        component: ProductDetailsComponent
       }
     ])
   ],
-  declarations: [ProductsComponent, FilterComponent],
+  declarations: [
+    ProductsComponent,
+    FilterComponent],
   entryComponents: [FilterComponent],
   providers: []
 })

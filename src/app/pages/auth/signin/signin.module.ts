@@ -11,6 +11,7 @@ import { SigninComponent } from './signin.component';
     CommonModule,
     FormsModule,
     IonicModule,
+    ReactiveFormsModule,
     RouterModule.forChild([
       {
         path: '',

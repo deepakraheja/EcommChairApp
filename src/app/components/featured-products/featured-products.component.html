@@ -1,11 +1,63 @@
 <div id="featured-products">
   <ion-item-divider color="white" class="ion-padding-top">
     <ion-label color="dark" class="text-bold">New Products</ion-label>
-    <ion-button class="ion-margin-end" size="small" slot="end" color="color1" fill="clear" routerLink="/tabs/products"
-      routerDirection="root">Sell All</ion-button>
+    <ion-button class="ion-margin-end" size="small" slot="end" color="color1" fill="clear"
+      [routerLink]="['/tabs/products/Showall/NewProduct']" routerDirection="root">See All</ion-button>
   </ion-item-divider>
-
   <ion-slides [options]="slideOpts" class="ion-padding-top">
+    <ion-slide *ngFor="let item of productskart">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-card class="ion-no-margin">
+              <!-- <div class="card-img" [style.background-image]="'url(' + item.images[0] + ')'"
+                (click)="goToProductDetails(item)"></div> -->
+              <div class="card-img"
+                [style.background-image]="'url(' +  ProductImage+item.ProductID+'/frontImage/'+item.FrontImage + ')'"
+                [routerLink]="['/tabs/products/productDetails/'+item.RowID+'/'+item.ProductSizeId]"></div>
+              <h5 class="mb-4">
+                <span class="review-box" *ngIf="item?.TotalRating>0"> {{(item?.AverageRating)}}
+                  ★</span>&nbsp;
+                <span class="text-grey" *ngIf="item?.TotalRating>0">({{item?.TotalRating}})</span>
+              </h5>
+              <ion-fab vertical="top" horizontal="end">
+                <ion-fab-button>
+                  <ion-icon color="color1" name="heart-outline" *ngIf="!item.isWishlist"></ion-icon>
+                  <ion-icon color="color1" name="heart" *ngIf="item.isWishlist"></ion-icon>
+                </ion-fab-button>
+              </ion-fab>
+
+              <ion-card-content [routerLink]="['/tabs/products/productDetails/'+item.RowID+'/'+item.ProductSizeId]">
+                <!-- <ion-row>
+                  <ion-text color=" color1">${{item.discountPrice}} &nbsp;</ion-text>
+                <span class="previous-price"> ${{item.price}}</span>
+        </ion-row> -->
+                <ion-row class="product-name">
+                  <!-- <h4>{{item.name | slice:0:20}}</h4> -->
+                  <a href="javaScript:void(0);">
+                    <h6 *ngIf="(item?.ProductName).length>100" title="{{item?.ProductName}}">
+                      {{ (item?.ProductName).substr(0, 100) | titlecase }}...</h6>
+                    <h6 *ngIf="(item?.ProductName).length<=100" title="{{item?.ProductName}}">
+                      {{ item?.ProductName | titlecase }}</h6>
+                  </a>
+                </ion-row>
+                <ion-row>
+                  <h4 *ngIf="user==null || user[0]?.isPersonal==true || item?.BusinessPrice==0">
+                    {{ (item?.BusinessPrice) | currency:currency?.currency:'symbol' }}
+                  </h4>
+                  <h4 *ngIf="user!=null && user[0]?.isPersonal==false && item?.BusinessPrice>0">
+                    {{ (item?.BusinessPrice) | currency:currency?.currency:'symbol' }}
+                  </h4>
+
+                </ion-row>
+              </ion-card-content>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+  </ion-slides>
+  <!-- <ion-slides [options]="slideOpts" class="ion-padding-top">
     <ion-slide *ngFor="let item of products">
       <ion-grid>
         <ion-row>
@@ -35,5 +87,5 @@
         </ion-row>
       </ion-grid>
     </ion-slide>
-  </ion-slides>
+  </ion-slides> -->
 </div>
