@@ -32,7 +32,7 @@
     </ion-content>
 
     <!-- Footer -->
-    <ion-footer class="ion-no-border">
+        <ion-footer class="ion-no-border" *ngIf="LoggedInUser?.length>0">
       <div class="ion-padding">
         <ion-button color="color1" expand="block" (click)="signout()">
           Signout</ion-button>

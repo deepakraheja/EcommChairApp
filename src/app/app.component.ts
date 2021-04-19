@@ -22,7 +22,7 @@ import { SharedDataService } from './Service/shared-data.service';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   public appPages = [];
   public LoggedInUser: any[] = [];
   constructor(
@@ -34,25 +34,31 @@ export class AppComponent implements OnInit{
     private pagesService: PagesService,
     private _SharedDataService: SharedDataService,
   ) {
-    this.initializeApp();
+
+    
   }
 
   ngOnInit(): void {
-    this._SharedDataService.currentUser.subscribe(a => {
-      this.LoggedInUser = a;
-    });
+    // this._SharedDataService.currentUser.subscribe(a => {
+    //   this.LoggedInUser = a;
+    // });
+    this.initializeApp();
   }
 
 
   initializeApp() {
-    this.LoggedInUser = JSON.parse(localStorage.getItem('LoggedInUser'));
-    this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
+    this._SharedDataService.currentUser.subscribe(a => {
+      this.LoggedInUser = a;
+      this.LoggedInUser = JSON.parse(localStorage.getItem('LoggedInUser'));
+      this.platform.ready().then(() => {
+        this.statusBar.styleDefault();
+        this.splashScreen.hide();
 
-      // Get Menus For Side Menu
-      this.appPages = this.pagesService.getPages();
+        // Get Menus For Side Menu
+        this.appPages = this.pagesService.getPages();
+      });
     });
+
   }
 
   // Signout Button

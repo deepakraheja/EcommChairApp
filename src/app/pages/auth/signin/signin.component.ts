@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
 import { LoadingService } from 'src/app/Service/loading.service';
+import { SharedDataService } from 'src/app/Service/shared-data.service';
 import { UsersService } from 'src/app/Service/users.service';
 
 @Component({
@@ -18,7 +19,8 @@ export class SigninComponent implements OnInit {
     private modalController: ModalController,
     public toastController: ToastController,
     private router: Router,
-    public loading: LoadingService
+    public loading: LoadingService,
+    private _SharedDataService: SharedDataService,
   ) { }
 
   ngOnInit() {
@@ -80,11 +82,11 @@ export class SigninComponent implements OnInit {
             localStorage.setItem('LoggedInUser', JSON.stringify(res));
             localStorage.setItem('Token', res[0].token);
 
-            // this._SharedDataService.AssignUser(res);
-            // this._SharedDataService.UserCart(res);
+            this._SharedDataService.AssignUser(res);
+            this._SharedDataService.UserCart(res);
 
             this.dismiss();
-            this.presentToast('You approval is pending.');
+            // this.presentToast('You approval is pending.');
           }
         }
         else {

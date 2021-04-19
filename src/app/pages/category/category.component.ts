@@ -12,6 +12,7 @@ import { Category } from '../../models/category.model';
 import { Router } from '@angular/router';
 import { SubCategoryService } from 'src/app/Service/Subcategory.service';
 import { environment } from 'src/environments/environment';
+import { LoadingService } from 'src/app/Service/loading.service';
 
 @Component({
   selector: 'app-category',
@@ -27,7 +28,9 @@ export class CategoryComponent implements OnInit {
 
   constructor(private router: Router,
     private _subcatService: SubCategoryService,
-    private categoryService: CategoryService) { }
+    private categoryService: CategoryService,
+    public loading: LoadingService
+    ) { }
 
   ngOnInit() {
     this.getCategories();
@@ -39,7 +42,9 @@ export class CategoryComponent implements OnInit {
     let subCatObj = {
       SideSubCategory: null
     }
+    this.loading.present();
     this._subcatService.GetSideSubcategory(subCatObj).subscribe(res => {
+      this.loading.dismiss();
       this.categories = res;
     });
 
