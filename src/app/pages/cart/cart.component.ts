@@ -8,7 +8,7 @@
 
 
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { StorageService } from '../../services/storage.service';
 import { Product } from '../../models/product.model';
 import { Router } from '@angular/router';
@@ -18,6 +18,7 @@ import { CartService } from 'src/app/Service/cart.service';
 import { productSizeColor } from 'src/app/shared/classes/productsizecolor';
 import { environment } from 'src/environments/environment';
 import { ProductDetailsComponent } from '../product-details/product-details.component';
+import { LoadingService } from 'src/app/Service/loading.service';
 
 @Component({
   selector: 'app-cart',
@@ -34,7 +35,7 @@ export class CartComponent implements OnInit {
   user: any[] = null;
   public TotalAmount = 0; TotalPieces = 0; Price = 0; Discount = 0;
   public SelectedProduct: any;
-  
+
   cartProducts: Product[] = [];
   total: number = 0;
 
@@ -47,13 +48,23 @@ export class CartComponent implements OnInit {
     // private toastrService: ToastrService,
     // private spinner: NgxSpinnerService,
     // private modalService: NgbModal,
-    private _productService: ProductsService
+    private _productService: ProductsService,
+    public loading: LoadingService,
+    public toastController: ToastController,
   ) { }
 
   ngOnInit() {
     this._SharedDataService.lstCart.subscribe(res => {
       this.LoadCart();
     });
+  }
+
+  async presentToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000
+    });
+    toast.present();
   }
 
   ionViewDidEnter() {
@@ -66,7 +77,7 @@ export class CartComponent implements OnInit {
       let obj = {
         UserID: this.user[0].userID
       };
-      //this.spinner.show();
+      this.loading.present();
       this._cartService.GetCartById(obj).subscribe(response => {
         //  
         debugger
@@ -74,7 +85,7 @@ export class CartComponent implements OnInit {
           this.IsEmptyCart = true;
         else
           this.IsEmptyCart = false;
-        // this.spinner.hide();
+        this.loading.dismiss();
         this.productSizeColor = response;
         this.getTotal();
 
@@ -88,7 +99,7 @@ export class CartComponent implements OnInit {
 
   }
 
-  
+
   getTotal() {
     this.TotalAmount = 0;
     this.TotalPieces = 0;
@@ -126,9 +137,9 @@ export class CartComponent implements OnInit {
       SetNo: Number(product.setNo),
       ProductId: Number(product.productId)
     }];
-    //this.spinner.show();
+    this.loading.present();
     this._cartService.UpdateToCart(obj).subscribe(res => {
-      // this.toastrService.success("Product quantity has been successfully updated in cart.");
+      this.presentToast("Product quantity has been successfully updated in cart.");
 
       this.LoadCart();
       this._SharedDataService.UserCart(this.productSizeColor);
@@ -148,9 +159,9 @@ export class CartComponent implements OnInit {
         SetNo: Number(product.setNo),
         ProductId: Number(product.productId)
       }];
-      //this.spinner.show();
+      this.loading.present();
       this._cartService.UpdateToCart(obj).subscribe(res => {
-        // this.toastrService.success("Product quantity has been successfully updated in cart.");
+        this.presentToast("Product quantity has been successfully updated in cart.");
         this.LoadCart();
         this._SharedDataService.UserCart(this.productSizeColor);
       });
@@ -158,7 +169,7 @@ export class CartComponent implements OnInit {
     // this.productService.updateCartQuantity(product, qty);
   }
 
-  
+
   public removeItem(product) {
     this.user = JSON.parse(localStorage.getItem('LoggedInUser'));
     //  
@@ -169,27 +180,27 @@ export class CartComponent implements OnInit {
       SetType: product.setType,
       ProductId: product.productId
     };
-    // this.spinner.show();
+    this.loading.present();
     this._cartService.DelCartById(obj).subscribe(res => {
-      // this.spinner.hide();
-      // this.toastrService.success('Product has been removed successfully from your cart.');
+      this.loading.dismiss();
+      this.presentToast('Product has been removed successfully from your cart.');
       this.LoadCart();
       this._SharedDataService.UserCart([]);
     });
   }
 
- // Go to product details page
- async goToProductDetails(product) {
-  debugger
-  const modal = await this.modalController.create({
-    component: ProductDetailsComponent,
-    componentProps: {
-      rowID: product.rowID,
-      productSizeId: product.productSizeId
-    }
-  });
-  return await modal.present();
-}
+  // Go to product details page
+  async goToProductDetails(product) {
+    debugger
+    const modal = await this.modalController.create({
+      component: ProductDetailsComponent,
+      componentProps: {
+        rowID: product.rowID,
+        productSizeId: product.productSizeId
+      }
+    });
+    return await modal.present();
+  }
 
 
 

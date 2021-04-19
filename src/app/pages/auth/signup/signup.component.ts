@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController, ToastController } from '@ionic/angular';
+import { LoadingService } from 'src/app/Service/loading.service';
 import { SharedDataService } from 'src/app/Service/shared-data.service';
 import { UsersService } from 'src/app/Service/users.service';
 import { SigninComponent } from '../signin/signin.component';
@@ -60,7 +61,8 @@ export class SignupComponent implements OnInit {
     //private toastr: ToastrService,
     private _SharedDataService: SharedDataService,
     public toastController: ToastController,
-    private modalController: ModalController
+    private modalController: ModalController,
+    public loading: LoadingService
   ) {
 
   }
@@ -321,7 +323,7 @@ export class SignupComponent implements OnInit {
 
       ;
     this.mobileotpSendStart = true;
-    this.userService.CheckMobileAllReadyRegisteredOrNot(obj).subscribe((res: any) => {
+    this.userService.CheckMobileAllReadyRegisteredOrNot(obj).subscribe(async (res: any) => {
       debugger
       this.loginStart = false;
       if (res == 0) {
@@ -333,7 +335,12 @@ export class SignupComponent implements OnInit {
         // alert('You are already registered. Please log in.');
         this.presentToast('You are already registered. Please log in.');
         // this.presentToast('You are already registered. Please log in.');
-        this.router.navigate(['/tabs/tab1']);
+        // this.router.navigate(['/tabs/tab1']);
+
+        const modal = await this.modalController.create({
+          component: SigninComponent
+        });
+        return await modal.present();
 
         // const modal = this.modalController.create({
         //   component: SigninComponent
@@ -422,8 +429,9 @@ export class SignupComponent implements OnInit {
 
       }
 
-
+      this.loading.present();
       this.userService.verify_mobile_otp(d).subscribe((res: any) => {
+        this.loading.dismiss();
         //setTimeout(() => this.spinner.hide(), 200);
         this.VerifyStart = false;
         if (res == 1) {
@@ -456,7 +464,7 @@ export class SignupComponent implements OnInit {
   }
 
   //****************************** Create Registration into database*************//
-  CreateRegistration() {
+  async CreateRegistration() {
     debugger
     this.verifyMOtp = this.verifyMobileOtp();
 
@@ -467,7 +475,7 @@ export class SignupComponent implements OnInit {
 
 
     if (this.RegistrationForm.invalid) {
-     
+
       if ($('#password').val() == '') {
         $('#password').focus();
         return;
@@ -476,8 +484,9 @@ export class SignupComponent implements OnInit {
     }
     else {
       debugger
-
-      this.userService.UserRegistration(this.RegistrationForm.value).subscribe(res => {
+      this.loading.present();
+      this.userService.UserRegistration(this.RegistrationForm.value).subscribe(async res => {
+        this.loading.dismiss();
         debugger
         if (res <= 0) {
           // setTimeout(() => this.spinner.hide(), 500);
@@ -486,13 +495,14 @@ export class SignupComponent implements OnInit {
         else if (res > 1) {
           // setTimeout(() => this.spinner.hide(), 500);
           debugger
-         
+          this.loading.present();
           let obj = {
             LoginId: this.RegistrationForm.value.mobileNo,
             password: this.RegistrationForm.value.password,
             userType: 2
           };
           this.userService.ValidLogin(obj).subscribe(res => {
+            this.loading.dismiss();
             if (res.length > 0) {
               if (res[0].statusId == 2) {
                 localStorage.setItem('LoggedInUser', JSON.stringify(res));
@@ -501,15 +511,16 @@ export class SignupComponent implements OnInit {
                 this._SharedDataService.UserCart(res);
 
                 this.presentToast("Thank you for registering with us. You should receive a confirmation text message(SMS) shortly with your user name and password reminder.");
-                
+
                 this.router.navigate(['/tabs/tab1']);
-               
+
               }
             }
           });
-          
+
         }
         else {
+          this.loading.dismiss();
           // setTimeout(() => this.spinner.hide(), 500);
           this.presentToast("You are already registered. Please log in.");
           // this.modalService.open(SigninComponent, {
@@ -522,7 +533,13 @@ export class SignupComponent implements OnInit {
           // }, (reason) => {
           //   this.modalService.dismissAll();
           // });
-          return;
+
+          const modal = await this.modalController.create({
+            component: SigninComponent
+          });
+          return await modal.present();
+
+          // return;
         }
       });
     }

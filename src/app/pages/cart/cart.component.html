@@ -44,7 +44,7 @@
                 <ion-item class="ion-no-padding">
 
                     <!-- Product Image -->
-                    <ion-thumbnail slot="start" (click)="goToProductDetails(product);">
+                    <ion-thumbnail slot="start" [routerLink]="['/tabs/products/productDetails/'+product.rowID+'/'+product.productSizeId]">
                         <img style="vertical-align: middle;" *ngIf="product?.setNo>0" [src]="ProductImage+product?.productId+'/productSetImage/'+product?.setNo+'/'+product?.productImg[0]">
                         <img style="vertical-align: middle;" *ngIf="product?.setNo==0" [src]="ProductImage+product?.productId+'/frontImage/'+product?.frontImage">
                     </ion-thumbnail>

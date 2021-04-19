@@ -9,7 +9,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Product } from '../../models/product.model';
 import { StorageService } from '../../services/storage.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalController, NavParams } from '@ionic/angular';
+import { ModalController, NavParams, ToastController } from '@ionic/angular';
 import { Productkart } from 'src/app/shared/classes/productkart';
 import { productSizeColor } from 'src/app/shared/classes/productsizecolor';
 import { ProductsService } from 'src/app/Service/Products.service';
@@ -80,13 +80,9 @@ export class ProductDetailsComponent implements OnInit {
     private modalController: ModalController,
     private _prodService: ProductsService,
     private _cartService: CartService,
-    public loading: LoadingService
+    public loading: LoadingService,
+    public toastController: ToastController,
   ) {
-
-
-
-
-
 
     // const rowID = this.navParams.get('rowID');
     // const productSizeId = this.navParams.get('productSizeId');
@@ -133,7 +129,9 @@ export class ProductDetailsComponent implements OnInit {
       });
 
       debugger
+      this.loading.present();
       this._prodService.GetWithoutSetProductByRowID(productObj).subscribe(product => {
+        this.loading.dismiss();
         if (!product) { // When product is empty redirect 404
           // this.router.navigateByUrl('/pages/404', { skipLocationChange: true });
         } else {
@@ -147,6 +145,13 @@ export class ProductDetailsComponent implements OnInit {
         // setTimeout(() => this.spinner.hide(), 1000);
       });
     });
+  }
+  async presentToast(msg) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000
+    });
+    toast.present();
   }
 
   async goToProductDetails(product) {
@@ -180,18 +185,19 @@ export class ProductDetailsComponent implements OnInit {
         ProductSizeId: Number(this.SelectedColor[0].productSizeId),
         Quantity: this.user[0].isPersonal == false ? (this.productkart[0].moq == 0 ? 1 : Number(this.productkart[0].moq)) : 1
       });
-
+      this.loading.present();
       this._cartService.AddToCart(obj).subscribe(res => {
-        // this.toastrService.success("Product has been successfully added in cart.");
+        this.loading.dismiss();
+        this.presentToast("Product has been successfully added in cart.");
         // this._SharedDataService.UserCart([]);
         if (res) {
           if (type == 1) {
-            this.dismiss();
+            // this.dismiss();
             this.router.navigate(['/cart']);
           }
           // this.router.navigate(['/shop/cart']);
           else {
-            this.dismiss();
+            // this.dismiss();
             this.router.navigate(['/checkout']);
           }
         }
