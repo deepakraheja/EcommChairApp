@@ -2,29 +2,24 @@
     .selected {
         border: 3px dotted var(--ion-color-color1);
         border-radius: 10px;
-
         ion-icon {
             color: var(--ion-color-color1);
         }
-
         ion-text {
             color: var(--ion-color-color1);
             font-weight: bold;
             font-size: 1.2rem;
         }
     }
-
     .border-style {
         border: 4px solid;
         width: 60px;
         border-radius: 15%;
     }
-
     #payment {
         img {
             width: 60px;
         }
-
         .title {
             font-size: 1.4rem;
             font-weight: 600;
@@ -32,13 +27,11 @@
             font-family: serif;
         }
     }
-
     #complete-section {
         h2 {
             font-weight: bold;
         }
     }
-
 }
 
 ion-footer {
@@ -46,4 +39,55 @@ ion-footer {
         --background-color: transparent;
         --ion-color-base: transparent !important;
     }
+}
+
+.Sequence {
+    font-size: 14px;
+    color: #c62127;
+    background-color: #cecece;
+    border-radius: 2px;
+    padding: 3px 7px;
+    vertical-align: baseline;
+    margin-right: 17px;
+}
+
+.step-heading {
+    margin-bottom: 0;
+}
+
+.step-heading.active {
+    background: #c62127;
+    color: #fff;
+}
+
+address {
+    width: 100%;
+}
+
+.row-column {
+    flex-direction: column;
+}
+
+@media (min-width: 578px) {
+    .row-column {
+        flex-direction: row;
+    }
+}
+
+.step-heading h5 {
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+h5 {
+    font-size: 14px
+}
+
+.step-heading .btn-link {
+    padding: 0;
+}
+
+.step-heading .fa-check {
+    color: #388e3c;
 }
