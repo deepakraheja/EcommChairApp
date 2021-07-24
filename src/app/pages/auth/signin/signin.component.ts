@@ -86,6 +86,7 @@ export class SigninComponent implements OnInit {
             this._SharedDataService.UserCart(res);
 
             this.dismiss();
+            this.router.navigate(['tabs/tab1']);
             // this.presentToast('You approval is pending.');
           }
         }
@@ -97,7 +98,7 @@ export class SigninComponent implements OnInit {
     }
   }
 
-  SignUp(){
+  SignUp() {
     this.dismiss();
     this.router.navigate(['/signup']);
   }

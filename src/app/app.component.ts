@@ -68,7 +68,7 @@ export class AppComponent implements OnInit {
     this.LoggedInUser = [];
     this._SharedDataService.AssignUser(null);
     this._SharedDataService.UserCart(null);
-    this.router.navigate(['/tabs/tab1']);
+    this.router.navigate(['/tabs/SelectionBuyer']);
     // this.router.navigate(['/onbroading']);
     // this.menuController.enable(false); // Make Sidemenu disable
   }
