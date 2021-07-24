@@ -12,7 +12,7 @@ const routes: Routes = [
   { path: 'verification', loadChildren: () => import('./pages/auth/verification/verification.module').then(m => m.VerificationModule) },
   { path: 'checkout', loadChildren: () => import('./pages/checkout/checkout.module').then(m => m.CheckoutModule) },
   { path: 'cart', loadChildren: () => import('./pages/cart/cart.module').then(m => m.CartModule) },
-  { path: '', loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule) }
+  { path: '', loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule) },
 ];
 
 @NgModule({
