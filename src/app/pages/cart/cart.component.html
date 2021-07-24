@@ -53,7 +53,7 @@
 
                         <!-- Product Name -->
                         <ion-text color="dark">
-                            <h2 [innerHTML]="(product?.productName).split('|')[0]"></h2>
+                            <h2 class="prod-name" [innerHTML]="(product?.productName).split('|')[0]"></h2>
                         </ion-text>
                         <ion-row>
                             <div *ngIf="product?.setType>=2">
@@ -65,7 +65,7 @@
                             </div>
                             <!-- <div *ngIf="product?.setType==1"><span>Size:
         </span><span>{{(product?.productName).split('|')[2]}}</span></div> -->
-                            <div *ngIf="user[0].isPersonal==false" style="color: red;"><span>Minimun Order
+                            <div *ngIf="user[0].isPersonal==false" style="color: red;"><span class="quantity">Minimun Order
                                     Quantity:
                                 </span><span>{{product?.moq}}</span></div>
                             <div *ngIf="product?.setType==1"><span>Color:
@@ -75,15 +75,15 @@
                         <ion-text color="color1">
                             <h4 *ngIf="product?.setType==2" class="text-black">
                                 {{ (product.salePrice*product.totalPieces).toFixed() | currency:productService?.Currency.currency:'symbol' }}
-                            </h4>&nbsp;
+                            </h4>
                             <del *ngIf="product?.setType==2 && product?.perDiscount>0">{{
                                 (product.price*product.totalPieces).toFixed() |
                                 currency:productService?.Currency.currency:'symbol' }}</del>
 
-                            <h4 *ngIf="product?.setType!=2" class="text-black">
+                            <h4 *ngIf="product?.setType!=2" class="text-black price-font">
 
                                 {{ (product.salePrice) | currency:productService?.Currency.currency:'symbol' }}
-                            </h4>&nbsp;
+                            </h4>
                             <del *ngIf="product?.setType!=2 && product?.perDiscount>0">{{ product.price |
                                 currency:productService?.Currency.currency:'symbol' }}</del> &nbsp;
                             <h5 class="text-red" *ngIf="product?.setType!=2 && product?.perDiscount>0">
@@ -93,10 +93,10 @@
 
                         <!-- Total Pieces -->
                         <ion-text color="color2">
-                            <h4>Total Pieces: {{ product.totalPieces }}</h4>
-                            <br>
+                            <h4 class="total-pieces">Total Pieces: {{ product.totalPieces }}</h4>
+                            
                             <div>
-                                <h3 *ngIf="product?.setType==1">
+                                <h3 class="total-price" *ngIf="product?.setType==1">
                                     {{ product.salePrice*product.totalPieces | currency:productService?.Currency.currency:'symbol' }}
                                 </h3>
                                 <h3 *ngIf="product?.setType==2">
@@ -109,23 +109,25 @@
                         </ion-text>
                         <!-- Quantity -->
                         <ion-row>
+                            <div class="quantiy-row">
                             <!-- Add More Product Quantity -->
                             <ion-col (click)="increment(product)">
                                 <ion-icon style="zoom:2.0;" name="add-circle-outline" color="medium"></ion-icon>
                             </ion-col>
 
                             <!-- Total Quantity -->
-                            <ion-col class="ion-text-center">{{product.quantity}}</ion-col>
+                            <ion-col class="ion-text-center quantity-text">{{product.quantity}}</ion-col>
 
                             <!-- Minus Product Quantity -->
                             <ion-col (click)="decrement(product)">
                                 <ion-icon style="zoom:2.0;" name="remove-circle-outline" color="medium"></ion-icon>
                             </ion-col>
+                        </div>
                         </ion-row>
                     </ion-label>
 
                     <!-- Remove Product From Cart -->
-                    <ion-icon name="close-circle" slot="end" color="medium" (click)="removeItem(product)"></ion-icon>
+                    <ion-icon name="close-circle" class="close-icon"  slot="end" color="medium" (click)="removeItem(product)"></ion-icon>
                 </ion-item>
             </ion-list>
         </ion-card>
