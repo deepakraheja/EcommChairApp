@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
     private _prodService: ProductsService,) {
     this.user = JSON.parse(localStorage.getItem('LoggedInUser'));
     if (this.user == null || this.user == undefined) {
-      this.router.navigate(['/tabs/SelectionBuyer']);
+      this.router.navigate(['/SelectionBuyer']);
     }
   }
 
@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
     debugger
     this.user = JSON.parse(localStorage.getItem('LoggedInUser'));
     if (this.user == null || this.user == undefined) {
-      this.router.navigate(['/tabs/SelectionBuyer']);
+      this.router.navigate(['/SelectionBuyer']);
     }
     else
       this.BindProductByCategory();

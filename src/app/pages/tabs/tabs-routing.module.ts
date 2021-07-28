@@ -99,16 +99,16 @@ const routes: Routes = [
           }
         ]
       },
-      {
-        path: 'SelectionBuyer',
-        children: [
-          {
-            path: '',
-            loadChildren: () =>
-              import('../selection-buyer/selection-buyer.module').then(m => m.SelectionBuyerModule)
-          }
-        ]
-      },
+      // {
+      //   path: 'SelectionBuyer',
+      //   children: [
+      //     {
+      //       path: '',
+      //       loadChildren: () =>
+      //         import('../auth/selection-buyer/selection-buyer.module').then(m => m.SelectionBuyerModule)
+      //     }
+      //   ]
+      // },
       {
         path: '',
         redirectTo: '/tabs/tab1',

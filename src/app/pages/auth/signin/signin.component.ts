@@ -38,6 +38,18 @@ export class SigninComponent implements OnInit {
     })
   }
 
+  GoBack(){
+    this.dismiss();
+    
+    this.router.navigate(['/SelectionBuyer']);
+  }
+
+  GoForgetPwd(){
+    this.dismiss();
+    
+    this.router.navigate(['/forget-password']);
+  }
+
   async presentToast(msg) {
     const toast = await this.toastController.create({
       message: msg,

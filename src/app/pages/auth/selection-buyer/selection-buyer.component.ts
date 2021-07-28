@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { SigninComponent } from '../auth/signin/signin.component';
+import { SigninComponent } from '../signin/signin.component';
 
 @Component({
   selector: 'app-selection-buyer',

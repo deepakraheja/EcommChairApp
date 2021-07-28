@@ -16,7 +16,7 @@
     }
 
     .section_two {
-        height: 80%;
+        height: 66%;
 
         img {
             height: 40%;
@@ -56,5 +56,22 @@
     .btn-twitter {
         background-color: #55acee;
     }
+
+    .forget-color {
+        color: #55acee;margin-top: -2%;
+    }
+    .account-color {
+        color: #ff8080;
+    }
+    .social-margin{margin-bottom: 35%;}
+    .social-btns{margin-top: 25%;}
+    .sign-btn{margin-top: 10%;}
+    .padding-lr{padding-left: 0px !important;
+        padding-right: 0px !important;
+        padding: 0px !important;
+    }
+
+
+
 
 }
